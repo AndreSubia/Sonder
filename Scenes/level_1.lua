@@ -211,7 +211,8 @@ function T:draw()
     love.graphics.draw(Map_test,0,0)
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test,1920,0)
-   
+    love.graphics.draw(Map_test,2880,0)
+
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
     end

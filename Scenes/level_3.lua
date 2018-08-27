@@ -281,6 +281,7 @@ function T:draw()
     love.graphics.draw(Map_test,0,0)
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test2,1920,0)
+    love.graphics.draw(Map_test,2880,0)
     self.super.draw(self)   
     --[[
     love.graphics.print({{0,0.56,0.70,1},"CATCH THE BUNNY"},960/2-50,10,0,1.5,1.5)

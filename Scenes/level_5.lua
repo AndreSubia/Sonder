@@ -21,9 +21,10 @@ local T      = Scene:derive("level_5")
 
 level_5_c = false
 
-function T:new(scene_mngr)
-    camera:setBounds(0,0,1920,540)
+camera:setBounds(0,0,2880,540)
 
+function T:new(scene_mngr)
+    
     self.super.new(self,scene_mngr)
     --add obstacles
     self.w = Wood()
@@ -77,6 +78,7 @@ function T:new(scene_mngr)
     
     sign     = love.graphics.newImage("Sprite/sign.png")
     Map_test = love.graphics.newImage("Map/myforest.png")
+    Map_test3 = love.graphics.newImage("Map/myforest3.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
 
 end
@@ -233,7 +235,11 @@ function T:update(dt)
         self.bar:set(self.bar.percentage - 1)
     end
 
-    if (self.p.fox_sprite.pos.x >= (960*4) then 
+    if self.bear.spr.pos.x >= 960*3 then
+        self.bear.vel = 0
+    end
+
+    if (self.p.fox_sprite.pos.x >= (960*4)) then 
         level_5_c = true
         --health.val(self.bar.percentage)    
     end
@@ -274,6 +280,8 @@ function T:draw()
     love.graphics.draw(Map_test,0,0)
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test,1920,0)
+    love.graphics.draw(Map_test3,2880,0)
+    
     love.graphics.draw(sign,1100,400)
     --local rbear = self.bear:rect_(0,0,120,50)
     --love.graphics.rectangle("line",rbear.x,rbear.y,rbear.w,rbear.h)

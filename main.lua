@@ -26,7 +26,7 @@ function love.load()
 	_G.events = Event(false)
 	Key:hook_love_events()
 
-	sm = SM("Scenes",{"main_menu","level_1","level_3","level_5","game_over"})
+	sm = SM("Scenes",{"main_menu","level_1","level_3","level_5","game_over","win"})
 	
 	sm:switch("main_menu")
 
@@ -60,6 +60,13 @@ function love.update(dt)
 		love.audio.stop(snd2)
 		love.audio.stop(snd1)
 		sm:switch("level_5")
+		love.audio.play(snd_bear)
+	end
+
+	if (sm.current_scene_name == "level_5" and level_5_c == true ) then
+		love.audio.stop(snd2)
+		love.audio.stop(snd1)
+		sm:switch("win")
 		love.audio.play(snd_bear)
 	end
 
