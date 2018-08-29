@@ -110,174 +110,175 @@ end
 local it = false
 
 function T:update(dt)    
-    self.super.update(self,dt)
-    camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
-    self.bar.pos.x = 180 + camera.x
-    self.bar_run.pos.x = 180 + camera.x
-    s_pos = 5 + camera.x
+    if pause == false then    
+        self.super.update(self,dt)
+        camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
+        self.bar.pos.x = 180 + camera.x
+        self.bar_run.pos.x = 180 + camera.x
+        s_pos = 5 + camera.x
 
-    if (it == false) then
-        self.bar:set(health.get()) --
-        self.bar.text = health.get().."%" --
-        it = true
-    end
+        if (it == false) then
+            self.bar:set(health.get()) --
+            self.bar.text = health.get().."%" --
+            it = true
+        end
 
-    if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
-        self.bar_run:set(self.bar_run.percentage - 0.3)
-        if self.bar_run.percentage <= 20 then
-            self.p.enable = false
-            self.bar_run.fill_color = U.color(1,0,0,1)
+        if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
+            self.bar_run:set(self.bar_run.percentage - 0.3)
+            if self.bar_run.percentage <= 20 then
+                self.p.enable = false
+                self.bar_run.fill_color = U.color(1,0,0,1)
+            else
+                self.p.enable = true
+                self.bar_run.fill_color = U.color(0.6,0.8,1,1)
+            end
         else
-            self.p.enable = true
+            self.bar_run:set(self.bar_run.percentage + 0.7)
+        end
+        if(self.bar_run.percentage == 100) then
             self.bar_run.fill_color = U.color(0.6,0.8,1,1)
         end
-    else
-        self.bar_run:set(self.bar_run.percentage + 0.7)
-    end
-    if(self.bar_run.percentage == 100) then
-        self.bar_run.fill_color = U.color(0.6,0.8,1,1)
-    end
-    self.bar_run.text= ""
-    --
+        self.bar_run.text= ""
+        --
 
-    local box_sonder = self.p.fox_sprite:rect_(0,0,-60,-10)
-    local box_minibear = self.bear.spr:rect()
-    local box_bear = self.bear.spr:rect_(0,0,130,50)
-    local box_wood = self.w.spr:rect()
-    local box_wood_1 = self.w1.spr:rect()
-    local box_wood_2 = self.w2.spr:rect_(0,0,18,15)
-    local box_wood_3 = self.w3.spr:rect()
-    --eat
+        local box_sonder = self.p.fox_sprite:rect_(0,0,-60,-10)
+        local box_minibear = self.bear.spr:rect()
+        local box_bear = self.bear.spr:rect_(0,0,130,50)
+        local box_wood = self.w.spr:rect()
+        local box_wood_1 = self.w1.spr:rect()
+        local box_wood_2 = self.w2.spr:rect_(0,0,18,15)
+        local box_wood_3 = self.w3.spr:rect()
+        --eat
 
-    if self.p.fox_sprite.current_anim == "bite" then
-        if self.a.remove == nil and self.a and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a.spr:rect() ) then
-            self.bar:set(self.bar.percentage - 15)
-            self.a.remove = true
-        elseif self.a1.remove == nil and self.a1 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a1.spr:rect() ) then
-            self.bar:set(self.bar.percentage + 10)
-            self.a1.remove = true
-        elseif self.a2.remove == nil and self.a2 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a2.spr:rect() ) then
-            self.bar:set(self.bar.percentage + 10)
-            self.a2.remove = true
-        elseif self.a3.remove == nil and self.a3 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a3.spr:rect() ) then
-            self.bar:set(self.bar.percentage + 10)
-            self.a3.remove = true
+        if self.p.fox_sprite.current_anim == "bite" then
+            if self.a.remove == nil and self.a and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a.spr:rect() ) then
+                self.bar:set(self.bar.percentage - 15)
+                self.a.remove = true
+            elseif self.a1.remove == nil and self.a1 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a1.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.a1.remove = true
+            elseif self.a2.remove == nil and self.a2 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a2.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.a2.remove = true
+            elseif self.a3.remove == nil and self.a3 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a3.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.a3.remove = true
+            end
+            
+        end
+
+        if U.AABBColl(box_sonder, box_wood) then
+            --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
+            local md = box_wood:minowski_diff(box_sonder)
+            local sep = md:closest_point_on_bounds(Vector2())
+            --tell the player on which side it has a collision
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+    
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
+        elseif U.AABBColl(box_sonder, box_wood_1) then
+            --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
+            local md = box_wood_1:minowski_diff(box_sonder)
+            local sep = md:closest_point_on_bounds(Vector2())
+            --tell the player on which side it has a collision
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+    
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
+        elseif U.AABBColl(box_sonder, box_wood_2) then
+            --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
+            local md = box_wood_2:minowski_diff(box_sonder)
+            local sep = md:closest_point_on_bounds(Vector2())
+            --tell the player on which side it has a collision
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+    
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y  
+
+        elseif U.AABBColl(box_sonder, box_wood_3) then
+            local md = box_wood_3:minowski_diff(box_sonder)
+            local sep = md:closest_point_on_bounds(Vector2())
+            --tell the player on which side it has a collision
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+    
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
+        end
+
+        if U.AABBColl(box_minibear,box_wood) then 
+            self.w.remove = true
+        elseif  U.AABBColl(box_minibear,box_wood_1) then 
+            self.w1.remove = true 
+        elseif U.AABBColl(box_minibear,box_wood_2) then 
+            self.w2.remove = true 
+        elseif U.AABBColl(box_minibear,box_wood_3) then
+            self.w3.remove = true
+        end
+
+        if U.AABBColl(box_sonder,box_bear) then
+            --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
+            local md = box_bear:minowski_diff(box_sonder)
+            local sep = md:closest_point_on_bounds(Vector2())
+            --tell the player on which side it has a collision
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep)) 
+            self.bear.vel = 190
+
+        else
+            self.bear.vel = 220
+        end 
+        
+        --life
+        
+        if  U.AABBColl(box_sonder, box_minibear) then
+            
+            local md = box_minibear:minowski_diff(box_sonder)
+            local sep = md:closest_point_on_bounds(Vector2())
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep)) 
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y  
+            self.bar:set(self.bar.percentage - 1)
+        end
+
+        if self.bear.spr.pos.x >= 960*3 then
+            self.bear.vel = 0
+        end
+
+        if (self.p.fox_sprite.pos.x >= (960*4)) then 
+            level_5_c = true
+            health.val(self.bar.percentage)    
+        end
+
+        if (self.bar.percentage <= 0) then
+        
+            game_over = true
+            self.bar.percentage = health.get()
+            self.bar.text = health.get().."%"
+            self.p.fox_sprite.pos.x = 750
+            self.p.fox_sprite.pos.y = 450
+            self.bear.spr.pos.x = 200
+            if self.w.remove ~= nil then
+                self.em:add(self.w)
+                self.w.remove = nil
+            end
+            if self.w1.remove ~= nil then
+                self.em:add(self.w1)
+                self.w1.remove = nil
+            end
+            if self.w2.remove ~= nil then
+                self.em:add(self.w2)
+                self.w2.remove = nil
+            end
+            if self.w3.remove ~= nil then
+                self.em:add(self.w3)
+                self.w3.remove = nil
+            end
         end
         
-    end
-
-    if U.AABBColl(box_sonder, box_wood) then
-        --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
-        local md = box_wood:minowski_diff(box_sonder)
-        local sep = md:closest_point_on_bounds(Vector2())
-        --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
- 
-        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
-    elseif U.AABBColl(box_sonder, box_wood_1) then
-        --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
-        local md = box_wood_1:minowski_diff(box_sonder)
-        local sep = md:closest_point_on_bounds(Vector2())
-        --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
- 
-        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
-    elseif U.AABBColl(box_sonder, box_wood_2) then
-        --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
-        local md = box_wood_2:minowski_diff(box_sonder)
-        local sep = md:closest_point_on_bounds(Vector2())
-        --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
- 
-        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y  
-
-    elseif U.AABBColl(box_sonder, box_wood_3) then
-        local md = box_wood_3:minowski_diff(box_sonder)
-        local sep = md:closest_point_on_bounds(Vector2())
-        --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
- 
-        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
-    end
-
-    if U.AABBColl(box_minibear,box_wood) then 
-        self.w.remove = true
-    elseif  U.AABBColl(box_minibear,box_wood_1) then 
-        self.w1.remove = true 
-    elseif U.AABBColl(box_minibear,box_wood_2) then 
-        self.w2.remove = true 
-    elseif U.AABBColl(box_minibear,box_wood_3) then
-        self.w3.remove = true
-    end
-
-    if U.AABBColl(box_sonder,box_bear) then
-        --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
-        local md = box_bear:minowski_diff(box_sonder)
-        local sep = md:closest_point_on_bounds(Vector2())
-        --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep)) 
-        self.bear.vel = 190
-
-    else
-        self.bear.vel = 220
-    end 
-    
-    --life
-    
-    if  U.AABBColl(box_sonder, box_minibear) then
-        
-        local md = box_minibear:minowski_diff(box_sonder)
-        local sep = md:closest_point_on_bounds(Vector2())
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep)) 
-        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y  
-        self.bar:set(self.bar.percentage - 1)
-    end
-
-    if self.bear.spr.pos.x >= 960*3 then
-        self.bear.vel = 0
-    end
-
-    if (self.p.fox_sprite.pos.x >= (960*4)) then 
-        level_5_c = true
-        health.val(self.bar.percentage)    
-    end
-
-    if (self.bar.percentage <= 0) then
-       
-        game_over = true
-        self.bar.percentage = health.get()
-        self.bar.text = health.get().."%"
-        self.p.fox_sprite.pos.x = 750
-        self.p.fox_sprite.pos.y = 450
-        self.bear.spr.pos.x = 200
-        if self.w.remove ~= nil then
-            self.em:add(self.w)
-            self.w.remove = nil
-        end
-        if self.w1.remove ~= nil then
-            self.em:add(self.w1)
-            self.w1.remove = nil
-        end
-        if self.w2.remove ~= nil then
-            self.em:add(self.w2)
-            self.w2.remove = nil
-        end
-        if self.w3.remove ~= nil then
-            self.em:add(self.w3)
-            self.w3.remove = nil
+        --bug fixed
+        if(self.p.fox_sprite.current_anim ~= "jump" and self.p.fox_sprite.current_anim ~= "bite" and self.p.fox_sprite.pos.y ~= 450 ) then
+            self.p.fox_sprite.pos.y = 450
         end
     end
-    
-    --bug fixed
-    if(self.p.fox_sprite.current_anim ~= "jump" and self.p.fox_sprite.current_anim ~= "bite" and self.p.fox_sprite.pos.y ~= 450 ) then
-        self.p.fox_sprite.pos.y = 450
-    end
-
 end
 
 function T:draw()

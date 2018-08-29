@@ -103,103 +103,104 @@ function T:on_bar_changed(bar,value)
 end
 --Update
 function T:update(dt)    
+    if pause == false then
     --keep this
-    self.super.update(self,dt)
-    --health bar & Sonder icon
-    camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
-    self.bar.pos.x = 180 + camera.x
-    self.bar_run.pos.x = 180 + camera.x
-    s_pos = 5 + camera.x      
-    --Run Bar
-    if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
-        self.bar_run:set(self.bar_run.percentage - 0.3)
-        if self.bar_run.percentage <= 20 then
-            self.p.enable = false
-            self.bar_run.fill_color = U.color(1,0,0,1)
+        self.super.update(self,dt)
+        --health bar & Sonder icon
+        camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
+        self.bar.pos.x = 180 + camera.x
+        self.bar_run.pos.x = 180 + camera.x
+        s_pos = 5 + camera.x      
+        --Run Bar
+        if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
+            self.bar_run:set(self.bar_run.percentage - 0.3)
+            if self.bar_run.percentage <= 20 then
+                self.p.enable = false
+                self.bar_run.fill_color = U.color(1,0,0,1)
+            else
+                self.p.enable = true
+                self.bar_run.fill_color = U.color(0.6,0.8,1,1)
+            end
         else
-            self.p.enable = true
+            self.bar_run:set(self.bar_run.percentage + 0.7)
+        end
+        if(self.bar_run.percentage == 100) then
             self.bar_run.fill_color = U.color(0.6,0.8,1,1)
         end
-    else
-        self.bar_run:set(self.bar_run.percentage + 0.7)
-    end
-    if(self.bar_run.percentage == 100) then
-        self.bar_run.fill_color = U.color(0.6,0.8,1,1)
-    end
-    self.bar_run.text= ""
-    --
+        self.bar_run.text= ""
+        --
 
-    --
-    local r1 = self.p.fox_sprite:rect_(0,0,-60,-10)
-    local r2 = self.b.spr:rect()
+        --
+        local r1 = self.p.fox_sprite:rect_(0,0,-60,-10)
+        local r2 = self.b.spr:rect()
 
-    if U.AABBColl(r1, r2) then
-        self.p.fox_sprite.tintColor = U.color(1,0,0,1)
+        if U.AABBColl(r1, r2) then
+            self.p.fox_sprite.tintColor = U.color(1,0,0,1)
 
-        local md = r2:minowski_diff(r1)
-        local sep = md:closest_point_on_bounds(Vector2())
-        --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+            local md = r2:minowski_diff(r1)
+            local sep = md:closest_point_on_bounds(Vector2())
+            --tell the player on which side it has a collision
+            self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+            
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
         
-        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
-    
-        self.bar:set(self.bar.percentage - 1)
-    end
+            self.bar:set(self.bar.percentage - 1)
+        end
 
-    --
-    if U.AABBColl(r1,self.t.spr:rect()) then
-        self.bar:set(self.bar.percentage - 1)
-    end
-    --
+        --
+        if U.AABBColl(r1,self.t.spr:rect()) then
+            self.bar:set(self.bar.percentage - 1)
+        end
+        --
 
-    if self.p.fox_sprite.current_anim == "bite" then
-        if self.a.remove == nil and self.a and U.AABBColl(r1, self.a.spr:rect() ) then
-            self.bar:set(self.bar.percentage + 10)
-            self.a.remove = true
+        if self.p.fox_sprite.current_anim == "bite" then
+            if self.a.remove == nil and self.a and U.AABBColl(r1, self.a.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.a.remove = true
+            end
+            if self.a1.remove == nil and self.a1 and U.AABBColl(r1, self.a1.spr:rect() ) then
+                self.bar:set(self.bar.percentage - 15)
+                self.a1.remove = true
+            end
+            if self.a3.remove == nil and self.a3 and U.AABBColl(r1, self.a3.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.a3.remove = true
+            end
         end
-        if self.a1.remove == nil and self.a1 and U.AABBColl(r1, self.a1.spr:rect() ) then
-            self.bar:set(self.bar.percentage - 15)
-            self.a1.remove = true
-        end
-        if self.a3.remove == nil and self.a3 and U.AABBColl(r1, self.a3.spr:rect() ) then
-            self.bar:set(self.bar.percentage + 10)
-            self.a3.remove = true
-        end
-    end
 
-    if (self.bar.percentage <= 0) then
-        game_over = true
-        if self.a.remove ~= nil then
-            self.em:add(self.a)
-            self.a.remove = nil
+        if (self.bar.percentage <= 0) then
+            game_over = true
+            if self.a.remove ~= nil then
+                self.em:add(self.a)
+                self.a.remove = nil
+            end
+            if self.a1.remove ~= nil then
+                self.em:add(self.a1)
+                self.a1.remove = nil
+            end
+            if self.a3.remove ~= nil then
+                self.em:add(self.a3)
+                self.a3.remove = nil
+            end
+            self.bar.percentage = 20
+            self.bar.text = "20%"
+            self.p.fox_sprite.pos.x = 80
+            self.p.fox_sprite.pos.y = 450
+            
         end
-        if self.a1.remove ~= nil then
-            self.em:add(self.a1)
-            self.a1.remove = nil
-        end
-        if self.a3.remove ~= nil then
-            self.em:add(self.a3)
-            self.a3.remove = nil
-        end
-        self.bar.percentage = 20
-        self.bar.text = "20%"
-        self.p.fox_sprite.pos.x = 80
-        self.p.fox_sprite.pos.y = 450
-        
-    end
 
-    if (self.p.fox_sprite.pos.x >= (960*3)) then
-        self.p.remove = true
-        level_1_c = true
-        health.val(self.bar.percentage)
-    end
+        if (self.p.fox_sprite.pos.x >= (960*3)) then
+            self.p.remove = true
+            level_1_c = true
+            health.val(self.bar.percentage)
+        end
 
-    butt:update(dt)
-    butt_R:update(dt)
-    butt_E:update(dt)
-    butt_J:update(dt)
-    
+        butt:update(dt)
+        butt_R:update(dt)
+        butt_E:update(dt)
+        butt_J:update(dt)
+    end
 end
 
 local s1 = true

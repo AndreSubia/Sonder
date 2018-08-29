@@ -11,6 +11,9 @@ local snd2
 local snd_bear
 
 function love.load()
+	icon = love.image.newImageData("Sprite/Sonder_icono.png")
+	love.window.setIcon(icon)
+
 	snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
 	snd2 = love.audio.newSource("Sound/PianoTheme.mp3","stream")
 	snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
@@ -32,10 +35,21 @@ function love.load()
 
 	love.audio.play(snd2)
 
+	pause = false
 end
+
 
 function love.update(dt)
 	if dt>0.035 then return end
+
+	if Key:key_down("p") then
+		pause = not pause
+		if pause == true then
+			love.graphics.setColor(0.4,0.4,0.4,1)
+		else
+			love.graphics.setColor(1,1,1,1)
+		end
+	end
 
 	if ( sm.current_scene_name == "main_menu" and Key:key_down("return") and game_over == false ) then
 		love.audio.stop(snd2)
