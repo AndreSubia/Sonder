@@ -42,7 +42,7 @@ end
 function love.update(dt)
 	if dt>0.035 then return end
 
-	if Key:key_down("p") then
+	if Key:key_down("return") and sm.current_scene_name ~= "main_menu" and sm.current_scene_name ~= "win" and sm.current_scene_name ~= "game_over" then
 		pause = not pause
 		if pause == true then
 			love.graphics.setColor(0.4,0.4,0.4,1)
