@@ -158,6 +158,9 @@ function T:update(dt)
     else
         self.bar_run:set(self.bar_run.percentage + 0.7)
     end
+    if(self.bar_run.percentage == 100) then
+        self.bar_run.fill_color = U.color(0.6,0.8,1,1)
+    end
     self.bar_run.text= ""
     --
 

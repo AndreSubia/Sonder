@@ -37,7 +37,7 @@ function T:new(scene_mngr)
     self.w2.spr.pos.x=2300
     self.em:add(self.w2)
     self.w3 = Wood()
-    self.w3.spr.pos.x=2450
+    self.w3.spr.pos.x=2550
     self.em:add(self.w3)
     --apples
     self.a = Apple()
@@ -133,6 +133,9 @@ function T:update(dt)
         end
     else
         self.bar_run:set(self.bar_run.percentage + 0.7)
+    end
+    if(self.bar_run.percentage == 100) then
+        self.bar_run.fill_color = U.color(0.6,0.8,1,1)
     end
     self.bar_run.text= ""
     --
@@ -241,11 +244,10 @@ function T:update(dt)
 
     if (self.p.fox_sprite.pos.x >= (960*4)) then 
         level_5_c = true
-        --health.val(self.bar.percentage)    
+        health.val(self.bar.percentage)    
     end
 
     if (self.bar.percentage <= 0) then
-        --love.event.quit()
        
         game_over = true
         self.bar.percentage = health.get()
@@ -253,23 +255,26 @@ function T:update(dt)
         self.p.fox_sprite.pos.x = 750
         self.p.fox_sprite.pos.y = 450
         self.bear.spr.pos.x = 200
-        self.em:add(self.w)
-        self.w.remove = nil
-        self.w.spr.pos.x = 1200
-        self.em:add(self.w1)
-        self.w1.remove = nil
-        self.w1.spr.pos.x = 1620
-        self.em:add(self.w2)
-        self.w2.remove = nil
-        self.w2.spr.pos.x = 2300
-        self.em:add(self.w3)
-        self.w3.remove = nil
-        self.w3.spr.pos.x = 2450
-    
+        if self.w.remove ~= nil then
+            self.em:add(self.w)
+            self.w.remove = nil
+        end
+        if self.w1.remove ~= nil then
+            self.em:add(self.w1)
+            self.w1.remove = nil
+        end
+        if self.w2.remove ~= nil then
+            self.em:add(self.w2)
+            self.w2.remove = nil
+        end
+        if self.w3.remove ~= nil then
+            self.em:add(self.w3)
+            self.w3.remove = nil
+        end
     end
     
     --bug fixed
-    if(self.p.fox_sprite.current_anim ~= "jump" and self.p.fox_sprite.pos.y ~= 450 ) then
+    if(self.p.fox_sprite.current_anim ~= "jump" and self.p.fox_sprite.current_anim ~= "bite" and self.p.fox_sprite.pos.y ~= 450 ) then
         self.p.fox_sprite.pos.y = 450
     end
 
@@ -283,8 +288,6 @@ function T:draw()
     love.graphics.draw(Map_test3,2880,0)
     
     love.graphics.draw(sign,1100,400)
-    --local rbear = self.bear:rect_(0,0,120,50)
-    --love.graphics.rectangle("line",rbear.x,rbear.y,rbear.w,rbear.h)
     love.graphics.draw(Sonder,s_pos,15)
     self.super.draw(self)
     
