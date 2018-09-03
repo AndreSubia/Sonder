@@ -135,9 +135,8 @@ local it = false
 function T:update(dt)    
     if pause == false then
         self.super.update(self,dt)
-        love.audio.play(snd1)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
-        
+        love.audio.play(snd1)
         self.bar.pos.x = 180 + camera.x
         self.bar_run.pos.x = 180 + camera.x
         s_pos = 5 + camera.x
@@ -255,21 +254,27 @@ function T:update(dt)
             self.bn.remove = true
         end
         --
-        if (self.bar.percentage <= 0) then
+        if (self.bar.percentage <= 0 or (self.bn.spr.pos.x - self.p.fox_sprite.pos.x) >= 800 ) then
             --love.event.quit()
             self.bar:set(health.get())
             self.bar.text = health.get().."%"
             self.p.fox_sprite.pos.x = 80
-            
+            self.p.fox_sprite.pos.y = 450
+            if self.bn.remove ~= nil then
+                self.em:add(self.bn)
+                self.bn.remove = nil
+            end
             self.bn.spr.pos.x = 400
             self.bn.spr.pos.y = 470
-
             self.e.spr.pos.x = 500
             self.e.spr.pos.y = 450
             self.e1.spr.pos.x = 700
             self.e1.spr.pos.y = 400
             self.e2.spr.pos.x = 650
             self.e2.spr.pos.y = 450
+            self.e.vx = 1
+            self.e1.vx = 1
+            self.e2.vx = 1
             it = false
             love.audio.stop(snd1)
             game_over = true
@@ -279,10 +284,17 @@ function T:update(dt)
             health.val(self.bar.percentage)
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450
+            if self.bn.remove ~= nil then
+                self.em:add(self.bn)
+                self.bn.remove = nil
+            end
             self.bn.spr.pos.x = 400
             self.bn.spr.pos.y = 470
             self.e.spr.pos.x = 500
             self.e.spr.pos.y = 450
+            self.e.vx = 1
+            self.e1.vx = 1
+            self.e2.vx = 1
             self.e1.spr.pos.x = 700
             self.e1.spr.pos.y = 400
             self.e2.spr.pos.x = 650
@@ -294,7 +306,7 @@ function T:update(dt)
         end
     end
     if pause == true then
-        love.audio.stop(snd1)
+        love.audio.pause(snd1)
     end
 end
 

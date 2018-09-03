@@ -4,7 +4,7 @@ local ep = require("Advice.allep")
 require("lib.camera")
 
 local Map_test
-local T      = Scene:derive("level_1")
+local T      = Scene:derive("intro")
 local s_pos
 
 game_over = false

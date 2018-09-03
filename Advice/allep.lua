@@ -34,7 +34,7 @@ function T:update(dt)
     self.anim_sm:update(dt)
     self.spr:update(dt)
     time = time + dt
-    if time > 0 and time < 2 then
+    --[[if time > 0 and time < 2 then
         self.spr:animation("ep1")
     end
     if time > 2 and time < 4 then
@@ -43,23 +43,23 @@ function T:update(dt)
     if time > 4 and time < 6 then
         self.spr:animation("ep3")
         love.audio.play(bang)
-    end
-    if time > 7 and time < 9 then
-        love.audio.stop(bang)
+    end]]
+    if time > 0 and time <1 then
+        --love.audio.stop(bang)
         self.spr:animation("ep4")
     end
     
-    if (time >= 9 and time < 10) then
+    if (time >= 1 and time < 2) then
         love.graphics.setColor(0.4,0.4,0.4,1)
     end
-    if (time>=10 and time <11) then
+    if (time>=2 and time <3) then
         love.graphics.setColor(0.2,0.2,0.2,1)
         self.spr:animation("ep")
     end
-    if (time>=11) then
+    if (time>=4) then
         love.graphics.setColor(0.1,0.1,0.1,1)
     end
-    if time >= 12 then 
+    if time >= 5 then 
         love.graphics.setColor(1,1,1,1)
         intro_c = true
     end

@@ -3,7 +3,7 @@ local Scene  = require("lib.scene")
 local Player = require("../player")
 
 local Bear   = require("../bear")
-local Thorn  = require("../thorn")
+local Thorn  = require("../rock2")
 
 local Apple  = require("../apple")
 local Apple1 = require("../apple1")
@@ -224,6 +224,7 @@ function T:update(dt)
             self.bear.spr.pos.x = 3200
             it = false
             love.audio.stop(snd_bear)
+            self.bar_run.percentage = 100 
             game_over = true
         end
 
@@ -233,12 +234,13 @@ function T:update(dt)
             self.p.fox_sprite.pos.x = 2700
             it = false
             love.audio.stop(snd_bear)
+            self.bar_run.percentage = 100
             level_5_c = true
             
         end
     end
     if(pause == true) then
-        love.audio.stop(snd_bear)
+        love.audio.pause(snd_bear)
     end
 end
 

@@ -19,7 +19,7 @@ end
 
 function MM:update(dt)
     self.super.update(self,dt)
-    self.ep_.spr:animation("ep4")
+    --self.ep_.spr:animation("ep4")
 end
 
 function MM:draw()

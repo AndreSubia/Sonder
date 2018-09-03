@@ -288,6 +288,7 @@ function T:update(dt)
                 self.w3.remove = nil
             end
             it = false
+            self.bar_run.percentage = 100
             level_6_c = true  
         end
 
@@ -316,6 +317,7 @@ function T:update(dt)
             end
             it = false
             love.audio.stop(snd_bear)
+            self.bar_run.percentage = 100
             game_over = true
         end
         

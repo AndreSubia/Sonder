@@ -225,7 +225,7 @@ function T:update(dt)
         butt_J:update(dt)
     end
     if pause == true then
-        love.audio.stop(snd1)
+        love.audio.pause(snd1)
     end
 end
 

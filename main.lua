@@ -25,7 +25,7 @@ function love.load()
 	_G.events = Event(false)
 	Key:hook_love_events()
 
-	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5","level_6","game_over","win"})	
+	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5","level_6","game_over","win","fell"})	
 	
 	sm:switch("intro")
 
@@ -40,7 +40,8 @@ function love.update(dt)
 								  sm.current_scene_name == "level_3" or
 								  sm.current_scene_name == "level_4" or
 								  sm.current_scene_name == "level_5" or 
-								  sm.current_scene_name == "level_6" ) then
+								  sm.current_scene_name == "level_6" or
+								  sm.current_scene_name == "fell") then
 		pause = not pause
 		if pause == true then
 			love.graphics.setColor(0.4,0.4,0.4,1)
@@ -70,6 +71,10 @@ function love.update(dt)
 	end
 
 	if (sm.current_scene_name == "level_6" and level_6_c == true ) then
+		sm:switch("fell")
+	end
+
+	if (sm.current_scene_name == "fell" and fell_c == true ) then
 		sm:switch("win")
 	end
 
@@ -103,6 +108,6 @@ end
 function love.draw()
 	sm:draw()
 	if ( pause == true ) then
-		love.graphics.print("PAUSA",750,15,0,3,3)
+		love.graphics.print({{1,1,1,1},"PAUSA"},750,15,0,3,3)
 	end	
 end

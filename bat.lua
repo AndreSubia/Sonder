@@ -33,12 +33,17 @@ function E:update(dt)
     self.spr:update(dt) 
 
     if self.spr.pos.x >= self.distance then
-        self.spr:flip_h(true)
         self.vx = -1
     elseif self.spr.pos.x < self.distance_init then
-        self.spr:flip_h(false)
         self.vx = 1        
     end
+
+    if(self.vx == 1) then
+        self.spr:flip_h(false)
+    else
+        self.spr:flip_h(true)
+    end
+
     self.spr.pos.x = self.spr.pos.x + self.vx * self.vel * dt
 end
 
