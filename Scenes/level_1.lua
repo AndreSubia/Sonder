@@ -22,7 +22,7 @@ local Map_test
 local T      = Scene:derive("level_1")
 local s_pos
 
-game_over = false
+
 level_1_c = false
 
 function T:new(scene_mngr)
@@ -76,7 +76,9 @@ function T:new(scene_mngr)
 
     Map_test = love.graphics.newImage("Map/fondo2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
-
+    
+    snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
+    snd1:setLooping(true)
 end
 
 
@@ -103,10 +105,13 @@ function T:on_bar_changed(bar,value)
 end
 --Update
 function T:update(dt)    
+    love.audio.setVolume(0.8)
     if pause == false then
     --keep this
         self.super.update(self,dt)
         --health bar & Sonder icon
+        love.audio.play(snd1)
+        
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
         self.bar.pos.x = 180 + camera.x
         self.bar_run.pos.x = 180 + camera.x
@@ -170,7 +175,8 @@ function T:update(dt)
         end
 
         if (self.bar.percentage <= 0) then
-            game_over = true
+            self.bar:set(19)
+            self.bar.text = "19%"
             if self.a.remove ~= nil then
                 self.em:add(self.a)
                 self.a.remove = nil
@@ -183,23 +189,43 @@ function T:update(dt)
                 self.em:add(self.a3)
                 self.a3.remove = nil
             end
-            self.bar.percentage = 20
-            self.bar.text = "20%"
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450
-            
+            love.audio.stop(snd1)
+            game_over = true
         end
 
-        if (self.p.fox_sprite.pos.x >= (960*3)) then
-            self.p.remove = true
-            level_1_c = true
+        if (self.p.fox_sprite.pos.x >= (960*4)) then
+    
             health.val(self.bar.percentage)
+            print(self.bar.percentage)
+            self.bar.percentage = 19
+            self.bar.text = "19%"
+            self.p.fox_sprite.pos.x = 80
+            self.p.fox_sprite.pos.y = 450 
+            if self.a.remove ~= nil then
+                self.em:add(self.a)
+                self.a.remove = nil
+            end
+            if self.a1.remove ~= nil then
+                self.em:add(self.a1)
+                self.a1.remove = nil
+            end
+            if self.a3.remove ~= nil then
+                self.em:add(self.a3)
+                self.a3.remove = nil
+            end
+            love.audio.stop(snd1)
+            level_1_c = true
         end
 
         butt:update(dt)
         butt_R:update(dt)
         butt_E:update(dt)
         butt_J:update(dt)
+    end
+    if pause == true then
+        love.audio.stop(snd1)
     end
 end
 
@@ -210,6 +236,7 @@ butt_R = button_R()
 butt_E = button_E()
 
 msg = mess()
+
 function T:draw()
     camera:set()
     love.graphics.draw(Map_test,0,0)

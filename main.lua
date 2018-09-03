@@ -7,20 +7,16 @@ local escene = require("lib.scene")
 
 local sm
 local snd1
-local snd2
+
 local snd_bear
+game_over = false
 
 function love.load()
 	icon = love.image.newImageData("Sprite/Sonder_icono.png")
 	love.window.setIcon(icon)
 
-	snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
-	snd2 = love.audio.newSource("Sound/PianoTheme.mp3","stream")
-	snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
-	snd1:setLooping(true)
-	snd2:setLooping(true)
-	snd_bear:setLooping(true)
-
+	go_snd = love.audio.newSource("Sound/PianoTheme.mp3","stream")
+	
 	love.graphics.setDefaultFilter('nearest','nearest')
 
 	local font = love.graphics.newFont("Font/babyblue.ttf",20)
@@ -29,11 +25,9 @@ function love.load()
 	_G.events = Event(false)
 	Key:hook_love_events()
 
-	sm = SM("Scenes",{"main_menu","level_1","level_3","level_5","game_over","win"})
+	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5","level_6","game_over","win"})	
 	
-	sm:switch("main_menu")
-
-	love.audio.play(snd2)
+	sm:switch("intro")
 
 	pause = false
 end
@@ -42,7 +36,11 @@ end
 function love.update(dt)
 	if dt>0.035 then return end
 
-	if Key:key_down("return") and sm.current_scene_name ~= "main_menu" and sm.current_scene_name ~= "win" and sm.current_scene_name ~= "game_over" then
+	if Key:key_down("return") and (sm.current_scene_name == "level_1" or 
+								  sm.current_scene_name == "level_3" or
+								  sm.current_scene_name == "level_4" or
+								  sm.current_scene_name == "level_5" or 
+								  sm.current_scene_name == "level_6" ) then
 		pause = not pause
 		if pause == true then
 			love.graphics.setColor(0.4,0.4,0.4,1)
@@ -51,42 +49,48 @@ function love.update(dt)
 		end
 	end
 
-	if ( sm.current_scene_name == "main_menu" and Key:key_down("return") and game_over == false ) then
-		love.audio.stop(snd2)
-		sm:switch("level_1")
-		love.audio.play(snd1)
-	end
-	
-	if (sm.current_scene_name == "level_1" and game_over == true) then --Key:key_down("m") then
-		love.audio.stop(snd1)
-		--sm.remove("level_1")
-		sm:switch("game_over")
-		love.audio.play(snd2)
+	if sm.current_scene_name == "intro" and intro_c == true then 
+		sm:switch("main_menu")
 	end
 
 	if (sm.current_scene_name == "level_1" and level_1_c == true ) then
-		love.audio.stop(snd2)
 		sm:switch("level_3")
-		love.audio.play(snd1)
 	end
 
 	if (sm.current_scene_name == "level_3" and level_3_c == true ) then
-		love.audio.stop(snd2)
-		love.audio.stop(snd1)
+		sm:switch("level_4")
+	end
+
+	if (sm.current_scene_name == "level_4" and level_4_c == true ) then
 		sm:switch("level_5")
-		love.audio.play(snd_bear)
 	end
 
 	if (sm.current_scene_name == "level_5" and level_5_c == true ) then
-		love.audio.stop(snd2)
-		love.audio.stop(snd1)
-		sm:switch("win")
-		love.audio.play(snd_bear)
+		sm:switch("level_6")
 	end
 
-	if (sm.current_scene_name == "game_over" and Key:key_down("return")) then
+	if (sm.current_scene_name == "level_6" and level_6_c == true ) then
+		sm:switch("win")
+	end
+
+	if game_over == true then
+		love.audio.play(go_snd)
+		sm:switch("game_over")
+	end
+
+	if (sm.current_scene_name == "game_over" and Key:key_down("return") and game_over == true) then
+		level_1_c = false
+		level_3_c = false
+		level_4_c = false
+		level_5_c = false
+		level_6_c = false
 		game_over = false
+		love.audio.stop(go_snd)
 		sm:switch("main_menu")
+	end
+
+	if (sm.current_scene_name == "main_menu" and Key:key_down("return") and game_over == false) then
+		sm:switch("level_1")
 	end
 
 	if Key:key_down("escape") then
@@ -98,4 +102,7 @@ end
 
 function love.draw()
 	sm:draw()
+	if ( pause == true ) then
+		love.graphics.print("PAUSA",750,15,0,3,3)
+	end	
 end

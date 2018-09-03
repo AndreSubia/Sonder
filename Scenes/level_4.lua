@@ -3,7 +3,8 @@ local Scene  = require("lib.scene")
 local Player = require("../player")
 
 local Bat  = require("../bat")
---
+local Bear   = require("../bear")
+
 local Thorn  = require("../thorn")
 
 local Apple  = require("../apple")
@@ -19,13 +20,13 @@ local health = require("../global")
 
 require("lib.camera")
 --Scene
-local T      = Scene:derive("level_3")
+local T      = Scene:derive("level_4")
 local Map_test
 local Sonder
 local s_pos
 --local fox_sprite
 
-level_3_c = false
+level_4_c = false
 
 --health = 20
 
@@ -35,23 +36,30 @@ function T:new(scene_mngr)
     self.p = Player()
     self.em:add(self.p)
 
+    self.bear= Bear()
+    self.bear.spr.pos.x = 3200
+    self.bear.spr:animation("sleep")
+    self.bear.vx = 0
+    self.em:add(self.bear)
+
+
     self.e = Bat()
     self.e.spr.pos.y = 450
     self.em:add(self.e)
 
     self.e1 = Bat()
-    self.e1.spr.pos.x = 700
-    self.e1.spr.pos.y = 400
-    self.e1.distance = self.e1.distance * 2
+    self.e1.spr.pos.x = 800
+    self.e1.spr.pos.y = 500
+    self.e1.distance = self.e1.distance * 4
     self.em:add(self.e1)
 
     self.e2 = Bat()
-    self.e2.spr.pos.x = 650
+    self.e2.spr.pos.x = 550
     self.e2.spr.pos.y = 450
     self.e2.vel = 200
-    self.e2.distance = self.e2.distance * 3
+    self.e2.distance = self.e2.distance * 2
     self.em:add(self.e2)
-    
+
     self.a = Apple()
     self.em:add(self.a)
     self.a1= Apple1()
@@ -62,7 +70,7 @@ function T:new(scene_mngr)
     self.a3= Apple1()
     self.a3.spr.pos.x = 1200
     self.em:add(self.a3)
-    
+
     --[[self.f = Fish()
     self.em:add(self.f)
 ]]
@@ -72,23 +80,23 @@ function T:new(scene_mngr)
     self.t = Thorn()
     self.em:add(self.t)
     self.t1 = Thorn()
-    self.t1.spr.pos.x = 750
+    self.t1.spr.pos.x = 350
     self.em:add(self.t1)
     self.t2 = Thorn()
-    self.t2.spr.pos.x = 950
+    self.t2.spr.pos.x = 1050
     self.em:add(self.t2)
     self.t3 = Thorn()
-    self.t3.spr.pos.x = 1300
+    self.t3.spr.pos.x = 1200
     self.em:add(self.t3)
     self.t4 = Thorn()
-    self.t4.spr.pos.x = 1600
+    self.t4.spr.pos.x = 1650
     self.em:add(self.t4)
 
     self.bar = Bar("health",125,35,200, 20,"")
     self.em:add(self.bar)
     self.bar_changed = function(bar, value)
     self:on_bar_changed(bar, value) end
-    
+
     self.bar_run = Bar("run",125,35,200, 20,"")
     self.em:add(self.bar_run)
     self.bar_changed_ = function(bar_run, value)
@@ -99,12 +107,12 @@ function T:new(scene_mngr)
     self.bar_run.fill_color = U.color(0.6,0.8,1,1)
 
 
-    Map_test  = love.graphics.newImage("Map/myforest.png")
-    Map_test2 = love.graphics.newImage("Map/myforest2.png")
+    Map_test  = love.graphics.newImage("Map/cueva.png")
+    --Map_test2 = love.graphics.newImage("Map/myforest2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
 
-    snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
-    snd1:setLooping(true)
+    cave_snd = love.audio.newSource("Sound/Cave.mp3","stream")
+    cave_snd:setLooping(true)
 end
 
 local entered = false
@@ -132,12 +140,12 @@ end
 
 local it = false
 
-function T:update(dt)    
+function T:update(dt)
     if pause == false then
         self.super.update(self,dt)
-        love.audio.play(snd1)
+        love.audio.play(cave_snd)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
-        
+
         self.bar.pos.x = 180 + camera.x
         self.bar_run.pos.x = 180 + camera.x
         s_pos = 5 + camera.x
@@ -181,9 +189,9 @@ function T:update(dt)
                 self.bar:set(self.bar.percentage + 10)
                 self.a3.remove = true
             end
-            
+
         end
-        
+
         --enemies
 
         if  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t.spr:rect()) then
@@ -197,13 +205,13 @@ function T:update(dt)
         elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t4.spr:rect()) then
             self.bar:set(self.bar.percentage - 2)
         end
-        
-    
+
+
         local r1 = self.p.fox_sprite:rect_(0,0,-60,-10)
         local r2 = self.e.spr:rect()
         local r3 = self.e1.spr:rect()
         local r4 = self.e2.spr:rect()
-        
+
         if U.AABBColl(r1, r2) then
             self.p.fox_sprite.tintColor = U.color(1,0,0,1)
 
@@ -211,10 +219,10 @@ function T:update(dt)
             local sep = md:closest_point_on_bounds(Vector2())
             --tell the player on which side it has a collision
             self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
-            
-            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
-        
+
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
+
             self.bar:set(self.bar.percentage - 1)
 
         elseif U.AABBColl(r1, r3) then
@@ -224,9 +232,9 @@ function T:update(dt)
             local sep = md:closest_point_on_bounds(Vector2())
             --tell the player on which side it has a collision
             self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
-    
-            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
+
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
 
             self.bar:set(self.bar.percentage - 1)
 
@@ -237,10 +245,10 @@ function T:update(dt)
             local sep = md:closest_point_on_bounds(Vector2())
             --tell the player on which side it has a collision
             self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
-    
-            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x 
-            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y 
-            
+
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + sep.x
+            self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + sep.y
+
             self.bar:set(self.bar.percentage - 2)
         end
 
@@ -251,7 +259,7 @@ function T:update(dt)
             self.bn.vel = 50
         end
 
-        if self.bn.spr.pos.x >= (2718) then
+        if self.bn.spr.pos.x >= (3200) then
             self.bn.remove = true
         end
         --
@@ -260,7 +268,7 @@ function T:update(dt)
             self.bar:set(health.get())
             self.bar.text = health.get().."%"
             self.p.fox_sprite.pos.x = 80
-            
+            self.p.fox_sprite.pos.y = 450
             self.bn.spr.pos.x = 400
             self.bn.spr.pos.y = 470
 
@@ -271,16 +279,17 @@ function T:update(dt)
             self.e2.spr.pos.x = 650
             self.e2.spr.pos.y = 450
             it = false
-            love.audio.stop(snd1)
+            love.audio.stop(cave_snd)
             game_over = true
         end
 
-        if (self.p.fox_sprite.pos.x >= 2720) then
+        if (self.p.fox_sprite.pos.x >= 3000) then
             health.val(self.bar.percentage)
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450
             self.bn.spr.pos.x = 400
             self.bn.spr.pos.y = 470
+
             self.e.spr.pos.x = 500
             self.e.spr.pos.y = 450
             self.e1.spr.pos.x = 700
@@ -288,13 +297,14 @@ function T:update(dt)
             self.e2.spr.pos.x = 650
             self.e2.spr.pos.y = 450
             it = false
-            love.audio.stop(snd1)
-            level_3_c = true
+            love.audio.stop(cave_snd)
+            level_4_c = true
             
         end
+
     end
     if pause == true then
-        love.audio.stop(snd1)
+        love.audio.stop(cave_snd)
     end
 end
 
@@ -303,12 +313,14 @@ function T:draw()
     love.graphics.clear(0.34,0.38,1)
     love.graphics.draw(Map_test,0,0)
     love.graphics.draw(Map_test,960,0)
-    love.graphics.draw(Map_test2,1920,0)
+    --love.graphics.draw(Map_test2,1920,0)
+    love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
-    self.super.draw(self)   
-    
+    self.super.draw(self)
+   
     love.graphics.draw(Sonder,s_pos,15)
     camera:unset()
+   -- print(health.get())
 
 end
 
