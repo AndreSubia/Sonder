@@ -25,7 +25,8 @@ function love.load()
 	_G.events = Event(false)
 	Key:hook_love_events()
 
-	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5","level_6","game_over","win","fell"})	
+	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5",
+					  "level_6","game_over","win","fell"})	
 	
 	sm:switch("intro")
 
