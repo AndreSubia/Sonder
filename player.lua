@@ -10,12 +10,12 @@ local fox
 local run_sound
 local bite_sound
 --Animations         
-local fox_idle   = Anim(0,138,135,69,3,3,4)
-local fox_run    = Anim(0,0,135,69,8,8,16)
-local fox_walk   = Anim(0,69,135,69,8,8,12) 
-local fox_jump   = Anim(0,0,135,69,8,8,10,false)
-local fox_bite   = Anim(0,276,135,69,5,5,16,false)
-local fox_bend   = Anim(0,207,135,69,1,1,1)
+local fox_idle   = Anim(0,140,135,70,3,3,4)
+local fox_run    = Anim(0,0,135,70,8,8,16)
+local fox_walk   = Anim(0,70,135,70,8,8,12) 
+local fox_jump   = Anim(0,0,135,70,8,8,10,false)
+local fox_bite   = Anim(0,280,135,70,5,5,16,false)
+local fox_bend   = Anim(0,210,135,70,1,1,1)
 
 function Player:new()
     if fox == nil then
@@ -25,7 +25,7 @@ function Player:new()
         run_sound = love.audio.newSource("Sound/step.wav","stream")
         bite_sound= love.audio.newSource("Sound/bite.wav","stream")
     end
-    self.fox_sprite = Sprite(fox,135,69,80,450)
+    self.fox_sprite = Sprite(fox,135,70,80,450)
     --[[fox_sprite:add_animation("idle",fox_idle)
     fox_sprite:add_animation("walk",fox_walk)
     fox_sprite:add_animation("run",fox_run)]]--

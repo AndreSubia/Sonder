@@ -8,6 +8,7 @@ local rock2 = Class:derive("rock2")
 local enemy
 
 local idle = Anim(0,0,48,32,1,1,1)
+local on_idle = Anim(48,0,48,32,1,1,1)
 
 function rock2:new()
     if enemy == nil then
@@ -15,7 +16,7 @@ function rock2:new()
     end
 
     self.spr = Sprite(enemy,48,32,600,470)
-    self.spr:add_animations({idle = idle})
+    self.spr:add_animations({idle = idle, on_idle = on_idle})
     self.spr:animation("idle")
     self.vx = 1
 
@@ -24,6 +25,10 @@ end
 
 function rock2:idle_enter(dt)
     self.spr:animation("idle")
+end
+
+function rock2:on_idle_enter(dt)
+    self.self:animation("on_idle")
 end
 
 function rock2:update(dt)

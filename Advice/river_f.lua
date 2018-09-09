@@ -7,13 +7,13 @@ local T = Class:derive("river_f")
 
 local ep
 
-local ep1 = Anim(0,0,960,540,4,4,20)
+local ep1 = Anim(0,0,960,540*4,4,4,15)
 
 function T:new()
     if ep == nil then
         ep = love.graphics.newImage("Map/fell.png")
     end
-    self.spr = Sprite(ep,960,540,0,0)
+    self.spr = Sprite(ep,960,540*4,0,0)
     self.spr:add_animations({ep1 = ep1})
     self.spr:animation("ep1")
     self.anim_sm = StateMachine(self, "ep1")

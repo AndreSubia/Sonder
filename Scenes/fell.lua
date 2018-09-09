@@ -155,7 +155,7 @@ function T:update(dt)
         --
         if self.p.fox_sprite.pos.y >= 1670 or self.p.fox_sprite.pos.x >= 800 then
             love.audio.stop(snd1_)
-            if health.get() <= 20  or self.p.fox_sprite.pos.x >= 800 then
+            if self.bar.percentage <= 20  or self.p.fox_sprite.pos.x >= 800 then
                 self.p.fox_sprite.pos.x = 600
                 self.p.fox_sprite.pos.y = 20
                 it = false

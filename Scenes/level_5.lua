@@ -175,14 +175,19 @@ function T:update(dt)
 
         if  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t.spr:rect()) then
             self.bar:set(self.bar.percentage - 1)
+            self.t.spr:animation("on_idle")
         elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t1.spr:rect()) then
-            self.bar:set(self.bar.percentage - 2)
+            self.bar:set(self.bar.percentage - 1)
+            self.t1.spr:animation("on_idle")
         elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t2.spr:rect()) then
             self.bar:set(self.bar.percentage - 1)
+            self.t2.spr:animation("on_idle")
         elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t3.spr:rect()) then
             self.bar:set(self.bar.percentage - 1)
+            self.t3.spr:animation("on_idle")
         elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t4.spr:rect()) then
-            self.bar:set(self.bar.percentage - 2)
+            self.bar:set(self.bar.percentage - 1)
+            self.t4.spr:animation("on_idle")
         end
 
         local box_sonder = self.p.fox_sprite:rect_(0,0,-60,-10)

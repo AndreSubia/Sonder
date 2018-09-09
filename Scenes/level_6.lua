@@ -20,7 +20,6 @@ local sign
 local Map_test
 local T      = Scene:derive("level_5")
 
-
 level_6_c = false
 local bn_j = true
 

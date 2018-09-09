@@ -156,6 +156,7 @@ function T:update(dt)
         --
         if U.AABBColl(r1,self.t.spr:rect()) then
             self.bar:set(self.bar.percentage - 1)
+            self.t.spr:animation("on_idle")
         end
         --
 
@@ -175,8 +176,14 @@ function T:update(dt)
         end
 
         if (self.bar.percentage <= 0) then
-            self.bar:set(19)
-            self.bar.text = "19%"
+            if(n_d == 4) then
+                self.bar:set(30)
+                self.bar.text = "30%"
+            else
+                self.bar:set(20)
+                self.bar.text = "20%"
+            end
+            
             if self.a.remove ~= nil then
                 self.em:add(self.a)
                 self.a.remove = nil
@@ -198,9 +205,8 @@ function T:update(dt)
         if (self.p.fox_sprite.pos.x >= (960*4)) then
     
             health.val(self.bar.percentage)
-            print(self.bar.percentage)
-            self.bar.percentage = 19
-            self.bar.text = "19%"
+            self.bar:set(20)
+            self.bar.text = "20%"
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450 
             if self.a.remove ~= nil then

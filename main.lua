@@ -3,13 +3,13 @@ local SM    = require("lib.scene_mngr")
 local Event = require("lib.event")
 Key 		= require("lib.keyboard")
 local escene = require("lib.scene")
-
+local Bar    = require("lib.ui.bar")
 
 local sm
-local snd1
 
 local snd_bear
 game_over = false
+n_d       = 0
 
 function love.load()
 	icon = love.image.newImageData("Sprite/Sonder_icono.png")
@@ -31,6 +31,7 @@ function love.load()
 	sm:switch("intro")
 
 	pause = false
+
 end
 
 
@@ -91,7 +92,9 @@ function love.update(dt)
 		level_5_c = false
 		level_6_c = false
 		game_over = false
+		pause = false
 		love.audio.stop(go_snd)
+		n_d = n_d + 1
 		sm:switch("main_menu")
 	end
 
@@ -109,6 +112,6 @@ end
 function love.draw()
 	sm:draw()
 	if ( pause == true ) then
-		love.graphics.print({{1,1,1,1},"PAUSA"},750,15,0,3,3)
+		love.graphics.print("PAUSA",750,15,0,3,3)
 	end	
 end
