@@ -29,7 +29,7 @@ function love.load()
 					  "level_6","level_7","level_8","level_9","game_over","win","fell"})	
 	
 	--Cambiar Nivel 
-	sm:switch("level_7")
+	sm:switch("level_1")
 	--
 	pause = false
 
