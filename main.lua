@@ -26,10 +26,11 @@ function love.load()
 	Key:hook_love_events()
 
 	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5",
-					  "level_6","game_over","win","fell"})	
+					  "level_6","level_7","level_8","level_9","game_over","win","fell"})	
 	
-	sm:switch("intro")
-
+	--Cambiar Nivel 
+	sm:switch("level_7")
+	--
 	pause = false
 
 end
@@ -43,6 +44,7 @@ function love.update(dt)
 								  sm.current_scene_name == "level_4" or
 								  sm.current_scene_name == "level_5" or 
 								  sm.current_scene_name == "level_6" or
+								  sm.current_scene_name == "level_7" or
 								  sm.current_scene_name == "fell") then
 		pause = not pause
 		if pause == true then

@@ -17,7 +17,7 @@ local fox_jump   = Anim(0,0,135,70,8,8,10,false)
 local fox_bite   = Anim(0,280,135,70,5,5,16,false)
 local fox_bend   = Anim(0,210,135,70,1,1,1)
 
-function Player:new()
+function Player:new(x,y)
     if fox == nil then
         fox = love.graphics.newImage("Sprite/FoxRun.png")
     end
@@ -25,7 +25,10 @@ function Player:new()
         run_sound = love.audio.newSource("Sound/step.wav","stream")
         bite_sound= love.audio.newSource("Sound/bite.wav","stream")
     end
-    self.fox_sprite = Sprite(fox,135,70,80,450)
+    self.x = x or 80
+    self.y = y or 450
+
+    self.fox_sprite = Sprite(fox,135,70,self.x,self.y)
     --[[fox_sprite:add_animation("idle",fox_idle)
     fox_sprite:add_animation("walk",fox_walk)
     fox_sprite:add_animation("run",fox_run)]]--
@@ -40,6 +43,7 @@ function Player:new()
     self.vx = 0
     self.anim_sm = SM(self,"idle")
     self.enable = true
+    self.y_before_jump2 = self.fox_sprite.pos.y
     --self.super.new(self,state)
 end
 
@@ -187,6 +191,8 @@ function Player:update(dt)
 
     if jumping == true then
         self.fox_sprite.pos.x = self.fox_sprite.pos.x + self.vx *200 *dt
+    elseif jumping == false and self.fox_sprite.pos.y < self.y_before_jump2 then 
+        self.fox_sprite.pos.y = self.y_before_jump2
     end
 
     if self.fox_sprite.pos.x <= 0 then
@@ -204,6 +210,7 @@ function Player:collided()
         self.vx = 0
         self.anim_sm:change("idle")
     end
+    --jumping = true
 end
 --
 function Player:draw()

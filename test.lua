@@ -1,4 +1,4 @@
---[[Class = require "lib.class"
+Class = require "lib.class"
 local Animal = Class:derive("Animal")
 
 function Animal:SoundOff()
@@ -35,7 +35,7 @@ end
 
 local player1 = Player("Andre")
 player1:SoundOff()
-print(player1:get_type())]]
+print(player1:get_type())
 
 require("Scenes.level_1")
 
