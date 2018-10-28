@@ -93,7 +93,7 @@ function T:new(scene_mngr)
     Map_test = love.graphics.newImage("Map/myforest.png")
     Map_test3 = love.graphics.newImage("Map/myforest3.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
-    snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
+    local snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
     crash = love.audio.newSource("Sound/crash.mp3","stream")
 	snd_bear:setLooping(true)
 end
@@ -134,8 +134,8 @@ function T:update(dt)
         s_pos = 5 + camera.x
 
         if (it == false) then
-            self.bar:set(health.get()) --100)--
-            self.bar.text = health.get().."%" --"100%"--
+            self.bar:set(100)--health.get()) --
+            self.bar.text = "100%"--health.get().."%" --
             it = true
         end
 

@@ -239,6 +239,7 @@ function T:update(dt)
             self.p.fox_sprite.pos.x = 2700
             it = false
             love.audio.stop(snd_bear)
+            love.audio.stop(snd_night)
             self.bar_run.percentage = 100
             level_5_c = true
             

@@ -43,17 +43,17 @@ function T:new(scene_mngr)
     self.em:add(self.bear)
 
 
-    self.e = Bat()
+    self.e = Bat(true,-200)
     self.e.spr.pos.y = 450
     self.em:add(self.e)
 
-    self.e1 = Bat()
+    self.e1 = Bat(true,-900)
     self.e1.spr.pos.x = 800
     self.e1.spr.pos.y = 500
-    self.e1.distance = self.e1.distance * 4
+    self.e1.distance = self.e1.distance * 3 - 70
     self.em:add(self.e1)
 
-    self.e2 = Bat()
+    self.e2 = Bat(true,-200)
     self.e2.spr.pos.x = 550
     self.e2.spr.pos.y = 450
     self.e2.vel = 200
@@ -112,7 +112,9 @@ function T:new(scene_mngr)
     Sonder   = love.graphics.newImage("Map/sonder1.png")
 
     cave_snd = love.audio.newSource("Sound/Cave.mp3","stream")
+    snd_night = love.audio.newSource("Sound/night2.mp3","stream")
     cave_snd:setLooping(true)
+    snd_night:setLooping(true)
 end
 
 local entered = false
@@ -144,6 +146,7 @@ function T:update(dt)
     if pause == false then
         self.super.update(self,dt)
         love.audio.play(cave_snd)
+        love.audio.play(snd_night)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
 
         self.bar.pos.x = 180 + camera.x
@@ -190,6 +193,11 @@ function T:update(dt)
                 self.a3.remove = true
             end
 
+        end
+
+
+        if self.p.fox_sprite.pos.y > 450 then
+            self.p.fox_sprite.pos.y = 450
         end
 
         --enemies

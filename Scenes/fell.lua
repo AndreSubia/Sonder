@@ -53,9 +53,11 @@ function T:new(scene_mngr)
     self.r5.spr.pos.y = 1450
     self.em:add(self.r5)
 
+    
+
     self.p = Player()
-    self.p.fox_sprite.pos.x = 600
-    self.p.fox_sprite.pos.y = 20
+    self.p.fox_sprite.pos.x = 480
+    self.p.fox_sprite.pos.y = 10
     self.em:add(self.p)
     
     self.bar = Bar("health",125,35,200, 20,"")
@@ -109,7 +111,7 @@ function T:update(dt)
         love.audio.play(snd1_)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/2), self.p.fox_sprite.pos.y - (love.graphics.getHeight()/2))
         self.p.fox_sprite:animation("run")
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + 350*dt  
+        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + 650*dt  
 
         self.bar.pos.x = 180 + camera.x
         self.bar.pos.y = 35 + camera.y
@@ -119,8 +121,8 @@ function T:update(dt)
         s_posy = 15 + camera.y
 
         if (it == false) then
-            self.bar:set(health.get())
-            self.bar.text = health.get().."%"
+            self.bar:set(health.get()) --100) --
+            self.bar.text = health.get().."%" --"100%"--
             it = true
         end
 
@@ -153,7 +155,7 @@ function T:update(dt)
             self.bar:set(self.bar.percentage - 2)
         end
         --
-        if self.p.fox_sprite.pos.y >= 1670 or self.p.fox_sprite.pos.x >= 800 then
+        if self.p.fox_sprite.pos.y >= 1770 or self.p.fox_sprite.pos.x >= 800 then
             love.audio.stop(snd1_)
             if self.bar.percentage <= 20  or self.p.fox_sprite.pos.x >= 800 then
                 self.p.fox_sprite.pos.x = 600
@@ -161,7 +163,7 @@ function T:update(dt)
                 it = false
                 game_over = true
             else 
-                health.val(self.bar.percentage)
+                health.val(5)
                 self.p.fox_sprite.pos.x = 600
                 self.p.fox_sprite.pos.y = 20
                 it = false 
@@ -178,7 +180,8 @@ function T:draw()
     camera:set()
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test,960,540)
-    love.graphics.draw(Map_test,960,540+540)
+    love.graphics.draw(Map_test,960,540*2)
+  --  love.graphics.draw(Map_test,960,540*3)
     self.super.draw(self)
     love.graphics.draw(Sonder,s_posx,s_posy)
     camera:unset()

@@ -16,6 +16,7 @@ local U      = require("lib.utils")
 local Vector2 = require("lib.vector2")
 
 local health = require("../global")
+local ep = require("Advice.river_f2")
 
 require("lib.camera")
 --Scene
@@ -32,11 +33,25 @@ level_7_c = false
 function T:new(scene_mngr)
     camera:setBounds(0,0,1920,540)
     self.super.new(self,scene_mngr)
+    
+    self.ep_ = ep()
+    self.ep_.spr.pos.x = 480
+    self.ep_.spr.pos.y = 270
+    self.em:add(self.ep_)
+    
     self.p = Player()
     self.em:add(self.p)
 
-    self.f = Fish(true,-400,true,100,200)
+    self.f = Fish(true,-400)
     self.em:add(self.f)
+    self.f1 = Fish(true,-400,true,200)
+    self.em:add(self.f1)
+    self.f2 = Fish(true,-600,true,100,400)
+    self.em:add(self.f2)
+
+    self.f3 = Fish(true,-300,true,50,700)
+    self.f3.spr.pos.x = 200 
+    self.em:add(self.   f3)
 
     self.bar = Bar("health",125,35,200, 20,"")
     self.em:add(self.bar)
@@ -52,12 +67,14 @@ function T:new(scene_mngr)
     self.bar_run.pos.y = 65
     self.bar_run.fill_color = U.color(0.6,0.8,1,1)
 
-    Map_test  = love.graphics.newImage("Map/myforest.png")
-    Map_test2 = love.graphics.newImage("Map/myforest2.png")
+    Map_test  = love.graphics.newImage("Map/myforest4.png")
+    Map_test2 = love.graphics.newImage("Map/myforest4.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
 
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
+
+    self.fishes = {}
 end
 
 local entered = false
@@ -86,18 +103,22 @@ end
 local it = false
 local it2 = false
 
+
+
+
 function T:update(dt)    
     if pause == false then
         self.super.update(self,dt)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
         love.audio.play(snd1)
+        love.audio.play(snd1_)
         self.bar.pos.x = 180 + camera.x
         self.bar_run.pos.x = 180 + camera.x
         s_pos = 5 + camera.x
         --
         if (it == false) then
-            self.bar:set(100)--health.get())
-            self.bar.text = "100%"--health.get().."%"
+            self.bar:set(health.get()) --100)--
+            self.bar.text = health.get().."%" --"100%"--
             it = true
         end
         --eat
@@ -119,15 +140,28 @@ function T:update(dt)
         end
         self.bar_run.text= ""
         --
+        local r1 = self.p.fox_sprite:rect_(0,0,-60,-10)
 
         if self.p.fox_sprite.current_anim == "bite" then
-            
+            if self.f.remove == nil and self.f and U.AABBColl(r1,self.f.spr:rect()) then
+                self.bar:set(self.bar.percentage + 20)
+                self.f.remove = true
+            end
+            if self.f1.remove == nil and self.f1 and U.AABBColl(r1,self.f1.spr:rect()) then
+                self.bar:set(self.bar.percentage + 20)
+                self.f1.remove = true
+            end
+            if self.f2.remove == nil and self.f2 and U.AABBColl(r1,self.f2.spr:rect()) then
+                self.bar:set(self.bar.percentage + 20)
+                self.f2.remove = true
+            end
+            if self.f3.remove == nil and self.f3 and U.AABBColl(r1,self.f3.spr:rect()) then
+                self.bar:set(self.bar.percentage + 20)
+                self.f3.remove = true
+            end 
         end
 
-        local r1 = self.p.fox_sprite:rect_(0,0,-60,-10)
-        local r2 = self.f.spr:rect()
-        
-        if U.AABBColl(r1,r2) then
+        --[[then
             local md = r2:minowski_diff(r1)
             local sep = md:closest_point_on_bounds(Vector2())
             --tell the player on which side it has a collision
@@ -143,31 +177,32 @@ function T:update(dt)
         if it2 == true then
     --        self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + 300*dt
         end
-
+        ]]--
 
         
-        if (self.p.fox_sprite.pos.x >= 2720) then
+        if (self.p.fox_sprite.pos.x >= 760) then
             health.val(self.bar.percentage)
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450
-            if self.bn.remove ~= nil then
-                self.em:add(self.bn)
-                self.bn.remove = nil
-            end
-            self.bn.spr.pos.x = 400
-            self.bn.spr.pos.y = 470
-            self.e.spr.pos.x = 500
-            self.e.spr.pos.y = 450
-            self.e.vx = 1
-            self.e1.vx = 1
-            self.e2.vx = 1
-            self.e1.spr.pos.x = 700
-            self.e1.spr.pos.y = 400
-            self.e2.spr.pos.x = 650
-            self.e2.spr.pos.y = 450
             it = false
             love.audio.stop(snd1)
             level_7_c = true
+            if self.f1.remove ~= nil then
+                self.em:add(self.f1)
+                self.f1.remove = nil
+            end
+            if self.f2.remove ~= nil then
+                self.em:add(self.f2)
+                self.f2.remove = nil
+            end
+            if self.f3.remove ~= nil then
+                self.em:add(self.f3)
+                self.f3.remove = nil
+            end
+            if self.f.remove ~= nil then
+                self.em:add(self.f)
+                self.f.remove = nil
+            end
             
         end
     end
@@ -179,9 +214,8 @@ end
 function T:draw()
     camera:set()
     love.graphics.clear(0.34,0.38,1)
-    love.graphics.draw(Map_test,0,0)
     love.graphics.draw(Map_test,960,0)
-    love.graphics.draw(Map_test2,1920,0)
+    love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
     self.super.draw(self)   
     

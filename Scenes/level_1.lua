@@ -77,8 +77,10 @@ function T:new(scene_mngr)
     Map_test = love.graphics.newImage("Map/fondo2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
     
-    snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
+    snd1 = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
+    snd_forest = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
     snd1:setLooping(true)
+    snd_forest:setLooping(true)
 end
 
 
@@ -111,6 +113,7 @@ function T:update(dt)
         self.super.update(self,dt)
         --health bar & Sonder icon
         love.audio.play(snd1)
+        love.audio.play(snd_forest)
         
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
         self.bar.pos.x = 180 + camera.x

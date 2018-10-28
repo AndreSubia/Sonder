@@ -29,7 +29,7 @@ function love.load()
 					  "level_6","level_7","level_8","level_9","game_over","win","fell"})	
 	
 	--Cambiar Nivel 
-	sm:switch("level_7")
+	sm:switch("intro")
 	--
 	pause = false
 
@@ -79,10 +79,12 @@ function love.update(dt)
 	end
 
 	if (sm.current_scene_name == "fell" and fell_c == true ) then
-		sm:switch("win")
+		sm:switch("level_7")
 	end
 
 	if game_over == true then
+		love.audio.stop(snd_forest)
+		love.audio.stop(snd_night)
 		love.audio.play(go_snd)
 		sm:switch("game_over")
 	end
