@@ -16,6 +16,7 @@ local U      = require("lib.utils")
 local Vector2 = require("lib.vector2")
 
 local health = require("../global")
+local mess_3 = require("Advice.message_lvl3")
 
 require("lib.camera")
 --Scene
@@ -315,6 +316,8 @@ function T:update(dt)
     end
 end
 
+msg_3= mess_3()
+
 function T:draw()
     camera:set()
     love.graphics.clear(0.34,0.38,1)
@@ -324,6 +327,8 @@ function T:draw()
     love.graphics.draw(Map_test,2880,0)
     self.super.draw(self)   
     
+    msg_3:draw()
+
     love.graphics.draw(Sonder,s_pos,15)
     camera:unset()
 

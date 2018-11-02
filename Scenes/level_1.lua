@@ -15,6 +15,7 @@ local button_J = require("Advice.button_jump")
 local button_R = require("Advice.button_run")
 local button_E = require("Advice.button_eat")
 local mess = require("Advice.message")
+local mess_bat = require("Advice.message_bat")
 
 require("lib.camera")
 
@@ -236,6 +237,7 @@ butt_R = button_R()
 butt_E = button_E()
 
 msg = mess()
+msg_2 = mess_bat() 
 
 function T:draw()
     camera:set()
@@ -255,6 +257,9 @@ function T:draw()
     end
     if self.p.fox_sprite.pos.x >= 1200 and self.p.fox_sprite.pos.x <=1800  then
         msg:draw()
+    end
+    if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
+        msg_2:draw()
     end
     if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
         butt_R:draw()

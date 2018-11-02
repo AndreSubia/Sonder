@@ -2,22 +2,22 @@ local Class = require("lib.class")
 local Anim = require("lib.animations")
 local Sprite = require("lib.sprite")
 
-local m = Class:derive("message")
+local m_bat = Class:derive("message_bat")
 
-local mss
-function m:new()
-    if mss == nil then
-        mss = love.graphics.newImage("Advice/aviso_bat.png")
+local mss_b
+function m_bat:new()
+    if mss_b == nil then
+        mss_b = love.graphics.newImage("Advice/aviso_bat.png")
     end
-
-    self.spr = Sprite(mss,132,166,2100,300)
+    --self.spr = Sprite(mss_b,156,166,300,300)
+    self.spr = Sprite(mss_b,182,165,2100,300)
 end 
-function m:update(dt)
+function m_bat:update(dt)
     self.spr:update(dt) 
 end
 
-function m:draw()
+function m_bat:draw()
     self.spr:draw()
 end
 
-return m
+return m_bat
