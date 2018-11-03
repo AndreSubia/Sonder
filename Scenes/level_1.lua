@@ -15,6 +15,7 @@ local button_J = require("Advice.button_jump")
 local button_R = require("Advice.button_run")
 local button_E = require("Advice.button_eat")
 local mess = require("Advice.message")
+local mess_bat = require("Advice.message_bat")
 
 require("lib.camera")
 
@@ -76,9 +77,14 @@ function T:new(scene_mngr)
 
     Map_test = love.graphics.newImage("Map/fondo2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+
+    alert1 = love.graphics.newImage("Advice/aviso_largo2.png")
+    alert2 = love.graphics.newImage("Advice/aviso_largo3.png")
+
     
     snd1 = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
     snd_forest = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
+
     snd1:setLooping(true)
     snd_forest:setLooping(true)
 end
@@ -174,7 +180,6 @@ function T:update(dt)
         --
         if U.AABBColl(r1,self.t.spr:rect()) then
             self.bar:set(self.bar.percentage - 1)
-            self.t.spr:animation("on_idle")
         end
         --
 
@@ -194,6 +199,7 @@ function T:update(dt)
         end
 
         if (self.bar.percentage <= 0) then
+
             if(n_d >= 4 and n_d <9) then
                 self.bar:set(30)
                 self.bar.text = "30%"
@@ -204,7 +210,7 @@ function T:update(dt)
                 self.bar:set(20)
                 self.bar.text = "20%"
             end
-            
+
             if self.a.remove ~= nil then
                 self.em:add(self.a)
                 self.a.remove = nil
@@ -226,8 +232,9 @@ function T:update(dt)
         if (self.p.fox_sprite.pos.x >= (960*4)) then
     
             health.val(self.bar.percentage)
-            self.bar:set(20)
-            self.bar.text = "20%"
+            print(self.bar.percentage)
+            self.bar.percentage = 19
+            self.bar.text = "19%"
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450 
             if self.a.remove ~= nil then
@@ -263,6 +270,7 @@ butt_R = button_R()
 butt_E = button_E()
 
 msg = mess()
+msg_2 = mess_bat() 
 
 function T:draw()
     camera:set()
@@ -270,6 +278,9 @@ function T:draw()
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
+
+    love.graphics.draw(alert1,500,100)
+    love.graphics.draw(alert2,900,100)
 
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
@@ -282,6 +293,9 @@ function T:draw()
     end
     if self.p.fox_sprite.pos.x >= 1200 and self.p.fox_sprite.pos.x <=1800  then
         msg:draw()
+    end
+    if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
+        msg_2:draw()
     end
     if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
         butt_R:draw()
