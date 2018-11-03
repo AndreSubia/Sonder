@@ -21,6 +21,8 @@ camera:setBounds(0,0,2880,540*2)
 function T:new(scene_mngr)
     --camera:setBounds(0,0,1920,540)
     self.super.new(self,scene_mngr)
+    
+    
     self.ep_ = ep()
     self.ep_.spr.pos.x = 480
     self.ep_.spr.pos.y = 540
@@ -52,11 +54,6 @@ function T:new(scene_mngr)
     self.r5.spr.pos.x = 590
     self.r5.spr.pos.y = 1450
     self.em:add(self.r5)
-
-    self.p = Player()
-    self.p.fox_sprite.pos.x = 600
-    self.p.fox_sprite.pos.y = 20
-    self.em:add(self.p)
     
     self.bar = Bar("health",125,35,200, 20,"")
     self.em:add(self.bar)
@@ -71,6 +68,11 @@ function T:new(scene_mngr)
     self.bar_run:set(self.bar_run.percentage)
     self.bar_run.pos.y = 65
     self.bar_run.fill_color = U.color(0.6,0.8,1,1)
+
+    self.p = Player()
+    self.p.fox_sprite.pos.x = 300   
+    self.p.fox_sprite.pos.y = 20
+    self.em:add(self.p)
 
     Map_test = love.graphics.newImage("Map/fell1.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
@@ -107,9 +109,9 @@ function T:update(dt)
     if(pause == false) then
         self.super.update(self,dt)
         love.audio.play(snd1_)
-        camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/2), self.p.fox_sprite.pos.y - (love.graphics.getHeight()/2))
+        camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/2), self.p.fox_sprite.pos.y - (love.graphics.getHeight())/4 )
         self.p.fox_sprite:animation("run")
-        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + 350*dt  
+          
 
         self.bar.pos.x = 180 + camera.x
         self.bar.pos.y = 35 + camera.y
@@ -119,11 +121,12 @@ function T:update(dt)
         s_posy = 15 + camera.y
 
         if (it == false) then
-            self.bar:set(health.get())
-            self.bar.text = health.get().."%"
+            self.bar:set(health.get()) --
+            self.bar.text = health.get().."%" --
             it = true
         end
-
+        --
+        self.p.fox_sprite.pos.y = self.p.fox_sprite.pos.y + 350*dt
         --
         local sonder = self.p.fox_sprite:rect_(0,0,-60,-10)
         local r1_ = self.r1.spr:rect_(60,0,-150 ,-10)
@@ -153,16 +156,16 @@ function T:update(dt)
             self.bar:set(self.bar.percentage - 2)
         end
         --
-        if self.p.fox_sprite.pos.y >= 1670 or self.p.fox_sprite.pos.x >= 800 then
+        if self.p.fox_sprite.pos.y >= 1770 or self.p.fox_sprite.pos.x >= 800 then
             love.audio.stop(snd1_)
             if self.bar.percentage <= 20  or self.p.fox_sprite.pos.x >= 800 then
-                self.p.fox_sprite.pos.x = 600
+                self.p.fox_sprite.pos.x = 300
                 self.p.fox_sprite.pos.y = 20
                 it = false
                 game_over = true
             else 
-                health.val(self.bar.percentage)
-                self.p.fox_sprite.pos.x = 600
+                health.val(5)
+                self.p.fox_sprite.pos.x = 300
                 self.p.fox_sprite.pos.y = 20
                 it = false 
                 fell_c = true 
@@ -178,7 +181,8 @@ function T:draw()
     camera:set()
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test,960,540)
-    love.graphics.draw(Map_test,960,540+540)
+    love.graphics.draw(Map_test,960,540*2)
+  --  love.graphics.draw(Map_test,960,540*3)
     self.super.draw(self)
     love.graphics.draw(Sonder,s_posx,s_posy)
     camera:unset()

@@ -4,7 +4,7 @@ local Event = require("lib.event")
 Key 		= require("lib.keyboard")
 local escene = require("lib.scene")
 local Bar    = require("lib.ui.bar")
-
+local health = require("../global")
 local sm
 
 local snd_bear
@@ -29,7 +29,12 @@ function love.load()
 					  "level_6","level_7","level_8","level_9","game_over","win","fell"})	
 	
 	--Cambiar Nivel 
-	sm:switch("level_1")
+
+	local level = "intro"
+	if ( level ~= ( "intro" or "main_menu" or "game_over" ) ) then
+		health.val(100)
+	end
+	sm:switch(level)
 	--
 	pause = false
 
@@ -47,11 +52,7 @@ function love.update(dt)
 								  sm.current_scene_name == "level_7" or
 								  sm.current_scene_name == "fell") then
 		pause = not pause
-		if pause == true then
-			love.graphics.setColor(0.4,0.4,0.4,1)
-		else
-			love.graphics.setColor(1,1,1,1)
-		end
+		
 	end
 
 	if sm.current_scene_name == "intro" and intro_c == true then 
@@ -79,10 +80,12 @@ function love.update(dt)
 	end
 
 	if (sm.current_scene_name == "fell" and fell_c == true ) then
-		sm:switch("win")
+		sm:switch("level_7")
 	end
 
 	if game_over == true then
+		love.audio.stop(snd_forest)
+		love.audio.stop(snd_night)
 		love.audio.play(go_snd)
 		sm:switch("game_over")
 	end
@@ -113,7 +116,13 @@ end
 
 function love.draw()
 	sm:draw()
-	if ( pause == true ) then
+	if pause == true then
+		love.graphics.setColor(1,1,1,1)
 		love.graphics.print("PAUSA",750,15,0,3,3)
-	end	
+		love.graphics.print("Muertes: "..n_d,750,530,0,2,2)
+		love.graphics.setColor(0.4,0.4,0.4,1)
+	else
+		love.graphics.setColor(1,1,1,1)
+	end
+
 end

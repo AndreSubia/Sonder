@@ -15,7 +15,7 @@ function thorn:new()
         enemy = love.graphics.newImage("Sprite/thorn.png")
     end
 
-    self.spr = Sprite(enemy,48,16,600,478)
+    self.spr = Sprite(enemy,48,16,600,478,1.2,1.2)
     self.spr:add_animations({idle = idle , on_idle = on_idle})
     self.spr:animation("idle")
     self.vx = 1

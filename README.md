@@ -12,4 +12,4 @@ El invierno se acerca y para lograr sobrevivir, nuestro amigo tendrá que empren
 Desarrollado por:
 - André Subia
 - Gonzalo Caira
-- Gutavo Inca
+- Gustavo Inca

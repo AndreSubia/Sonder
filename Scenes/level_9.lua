@@ -100,7 +100,13 @@ function T:update(dt)
         --eat
         --Run Bar
         if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
-            self.bar_run:set(self.bar_run.percentage - 0.3)
+            
+            if self.p.fox_sprite.current_anim == "jump" and love.keyboard.isDown("z") then
+                self.bar_run:set(self.bar_run.percentage - 0.7)
+            else 
+                self.bar_run:set(self.bar_run.percentage - 0.3)
+            end
+            
             if self.bar_run.percentage <= 20 then
                 self.p.enable = false
                 self.bar_run.fill_color = U.color(1,0,0,1)
@@ -109,7 +115,7 @@ function T:update(dt)
                 self.bar_run.fill_color = U.color(0.6,0.8,1,1)
             end
         else
-            self.bar_run:set(self.bar_run.percentage + 0.7)
+            self.bar_run:set(self.bar_run.percentage + 0.8)
         end
         if(self.bar_run.percentage == 100) then
             self.bar_run.fill_color = U.color(0.6,0.8,1,1)

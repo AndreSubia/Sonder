@@ -13,7 +13,7 @@ function A:new()
     if apple == nil then
         apple = love.graphics.newImage("Sprite/apple.png")
     end
-    self.spr = Sprite(apple,19,19,400,470)
+    self.spr = Sprite(apple,19,19,400,470,1.5,1.5)
     self.spr:add_animations({idle = idle})
     self.spr:animation("idle")
     self.anim_sm = StateMachine(self, "idle")

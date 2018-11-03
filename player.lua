@@ -41,6 +41,7 @@ function Player:new(x,y)
                                     bend=fox_bend})
     self.fox_sprite:animation("idle")
     self.vx = 0
+    self.vj = 200
     self.anim_sm = SM(self,"idle")
     self.enable = true
     self.y_before_jump2 = self.fox_sprite.pos.y
@@ -56,7 +57,7 @@ function Player:idle(dt)
     if Key:key("left") or Key:key("right") then
         --self:change("walk")
         self.anim_sm:change("walk")
-    elseif Key:key("space") then
+    elseif Key:key("up") or Key:key("space") then
         --self:change("idle")
         self.anim_sm:change("jump")
     elseif Key:key_down("x") then
@@ -175,7 +176,7 @@ function Player:update(dt)
 
     if(self.fox_sprite.current_anim=="walk") then
         self.fox_sprite.pos.x = self.fox_sprite.pos.x + self.vx *120 *dt
-        if Key:key_down("space") then 
+        if Key:key_down("up") or Key:key("space") then 
             self.anim_sm:change("jump")
         end
     end
@@ -183,14 +184,21 @@ function Player:update(dt)
     if self.enable == true then 
         if(self.fox_sprite.current_anim=="run") then
             self.fox_sprite.pos.x = self.fox_sprite.pos.x + self.vx *225 *dt
-            if Key:key_down("space") then 
+            if Key:key_down("up") or Key:key("space") then 
                 self.anim_sm:change("jump")
             end
         end
     end
 
     if jumping == true then
-        self.fox_sprite.pos.x = self.fox_sprite.pos.x + self.vx *200 *dt
+        if love.keyboard.isDown("z") then 
+            self.vj = 300
+        else 
+            self.vj = 200
+        end
+        if self.enable == true then
+            self.fox_sprite.pos.x = self.fox_sprite.pos.x + self.vx * self.vj *dt          
+        end
     elseif jumping == false and self.fox_sprite.pos.y < self.y_before_jump2 then 
         self.fox_sprite.pos.y = self.y_before_jump2
     end

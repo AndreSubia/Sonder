@@ -64,6 +64,7 @@ function T:new(scene_mngr)
     self.em:add(self.p)
     --add bear
     self.bear= Bear()
+    self.bear.spr.pos.x = 250 
     self.em:add(self.bear)
 
     self.bn = Bunny()
@@ -93,7 +94,7 @@ function T:new(scene_mngr)
     Map_test = love.graphics.newImage("Map/myforest.png")
     Map_test3 = love.graphics.newImage("Map/myforest3.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
-    snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
+    local snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
     crash = love.audio.newSource("Sound/crash.mp3","stream")
 	snd_bear:setLooping(true)
 end
@@ -134,13 +135,20 @@ function T:update(dt)
         s_pos = 5 + camera.x
 
         if (it == false) then
-            self.bar:set(health.get()) --100)--
-            self.bar.text = health.get().."%" --"100%"--
+            self.bar:set(health.get()) --
+            self.bar.text = health.get().."%" --
             it = true
         end
 
+        --Run Bar
         if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
-            self.bar_run:set(self.bar_run.percentage - 0.3)
+            
+            if self.p.fox_sprite.current_anim == "jump" and love.keyboard.isDown("z") then
+                self.bar_run:set(self.bar_run.percentage - 0.7)
+            else 
+                self.bar_run:set(self.bar_run.percentage - 0.3)
+            end
+            
             if self.bar_run.percentage <= 20 then
                 self.p.enable = false
                 self.bar_run.fill_color = U.color(1,0,0,1)
@@ -149,12 +157,13 @@ function T:update(dt)
                 self.bar_run.fill_color = U.color(0.6,0.8,1,1)
             end
         else
-            self.bar_run:set(self.bar_run.percentage + 0.7)
+            self.bar_run:set(self.bar_run.percentage + 0.8)
         end
         if(self.bar_run.percentage == 100) then
             self.bar_run.fill_color = U.color(0.6,0.8,1,1)
         end
         self.bar_run.text= ""
+        --
         --
 
         local box_sonder = self.p.fox_sprite:rect_(0,0,-60,-10)
@@ -166,17 +175,24 @@ function T:update(dt)
         local box_wood_3 = self.w3.spr:rect()
         --eat
 
+        local eat 
+        if ( self.p.fox_sprite.flip.x == 1) then
+            eat = self.p.fox_sprite:rect_(55,0,-110,-10)
+        elseif self.p.fox_sprite.flip.x == -1 then
+            eat = self.p.fox_sprite:rect_(-55,0,-110,-10)
+        end
+
         if self.p.fox_sprite.current_anim == "bite" then
-            if self.a.remove == nil and self.a and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a.spr:rect() ) then
+            if self.a.remove == nil and self.a and U.AABBColl(eat, self.a.spr:rect() ) then
                 self.bar:set(self.bar.percentage - 15)
                 self.a.remove = true
-            elseif self.a1.remove == nil and self.a1 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a1.spr:rect() ) then
+            elseif self.a1.remove == nil and self.a1 and U.AABBColl(eat, self.a1.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a1.remove = true
-            elseif self.a2.remove == nil and self.a2 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a2.spr:rect() ) then
+            elseif self.a2.remove == nil and self.a2 and U.AABBColl(eat, self.a2.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a2.remove = true
-            elseif self.a3.remove == nil and self.a3 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a3.spr:rect() ) then
+            elseif self.a3.remove == nil and self.a3 and U.AABBColl(eat, self.a3.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a3.remove = true
             end
@@ -269,7 +285,7 @@ function T:update(dt)
             love.audio.play(crash)
             self.p.fox_sprite.pos.x = 750
             self.p.fox_sprite.pos.y = 450
-            self.bear.spr.pos.x = 100   
+            self.bear.spr.pos.x = 250
             if self.w.remove ~= nil then
                 self.em:add(self.w)
                 self.w.remove = nil
@@ -286,9 +302,10 @@ function T:update(dt)
                 self.em:add(self.w3)
                 self.w3.remove = nil
             end
+            
             it = false
             self.bar_run.percentage = 100
-            level_6_c = true  
+            level_6_c = true 
         end
 
         if (self.bar.percentage <= 0) then
@@ -297,7 +314,7 @@ function T:update(dt)
             self.bar.text = health.get().."%"
             self.p.fox_sprite.pos.x = 750
             self.p.fox_sprite.pos.y = 450
-            self.bear.spr.pos.x = 100   
+            self.bear.spr.pos.x = 250
             if self.w.remove ~= nil then
                 self.em:add(self.w)
                 self.w.remove = nil

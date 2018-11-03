@@ -25,38 +25,39 @@ function F:new(bul,h,bul2,d_b,d_e)
     self.h = h or 0
     self.vx = 1
     self.move = bul2 or false 
-    self.d_b  = d_b or 0
-    self.d_e  = d_e or 0 
+    self.d_b  = d_b or self.spr.pos.x
+    self.d_e  = d_e or self.spr.pos.y
     --velocidad del pez
     self.vel  = 100
+
+
+    self.y_vel = 0
+    self.y_gravity = 1000
+    self.var = true
 end
 
 function F:idle_enter(dt)
     self.spr:animation("idle")
 end
 
-local y_vel = 0
-local y_gravity = 1000
-local var = true
-
 function F:update(dt)
     self.anim_sm:update(dt)
     self.spr:update(dt)     
     
-    if var == true then
-        y_before_jump = self.spr.pos.y
-        y_vel = self.h -- max hight jump
-        var = false
+    if self.var == true then
+        self.y_before_jump = self.spr.pos.y
+        self.y_vel = self.h -- max hight jump
+        self.var = false
     end
 
     --Pez Saltando
     if self.jump == true then
-        y_vel = y_vel + y_gravity * dt
-        self.spr.pos.y = self.spr.pos.y + y_vel * dt
-        if self.spr.pos.y >= y_before_jump then    
-            self.spr.pos.y = y_before_jump
-            y_before_jump = nil
-            var = true
+        self.y_vel = self.y_vel + self.y_gravity * dt
+        self.spr.pos.y = self.spr.pos.y + self.y_vel * dt
+        if self.spr.pos.y >= self.y_before_jump then    
+            self.spr.pos.y = self.y_before_jump
+            self.y_before_jump = nil
+            self.var = true
         end
     end
 
