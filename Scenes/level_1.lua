@@ -77,7 +77,9 @@ function T:new(scene_mngr)
 
     Map_test = love.graphics.newImage("Map/fondo2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
-    
+    alert1 = love.graphics.newImage("Advice/aviso_largo2.png")
+    alert2 = love.graphics.newImage("Advice/aviso_largo3.png")
+
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
 end
@@ -245,6 +247,9 @@ function T:draw()
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
+
+    love.graphics.draw(alert1,500,100)
+    love.graphics.draw(alert2,900,100)
 
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
