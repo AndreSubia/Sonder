@@ -9,15 +9,16 @@ local enemy
 
 local idle = Anim(0,0,32,32,5,5,9)
 
-function E:new(bul,h)
+function E:new(bul,h,vy)
     if enemy == nil then
         enemy = love.graphics.newImage("Sprite/enemy.png")
     end
 
-    self.spr = Sprite(enemy,32,32,500,300,1,1)
+    self.spr = Sprite(enemy,32,32,500,300,1.3,1.3)
     self.spr:add_animations({idle = idle})
     self.spr:animation("idle")
     self.vx = 1
+    self.vy = vy or 1
     self.vel = 110
     self.anim_sm = StateMachine(self, "idle")
     self.distance = love.graphics.getWidth()
@@ -54,7 +55,7 @@ function E:update(dt)
     
     --Murcielago mov vertical
     if self.jump == true then
-        self.y_vel = self.y_vel + self.y_gravity * dt
+        self.y_vel = self.y_vel + self.y_gravity * dt 
         self.spr.pos.y = self.spr.pos.y + self.y_vel * dt
         if self.spr.pos.y >= self.y_before_jump then    
             self.spr.pos.y = self.y_before_jump

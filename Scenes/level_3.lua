@@ -41,8 +41,9 @@ function T:new(scene_mngr)
 
     self.e1 = Bat()
     self.e1.spr.pos.x = 700
-    self.e1.spr.pos.y = 400
-    self.e1.distance = self.e1.distance * 2
+    self.e1.spr.pos.y = 380
+    
+    self.e1.distance = self.e1.distance * 1.5
     self.em:add(self.e1)
 
     self.e2 = Bat()
@@ -72,7 +73,7 @@ function T:new(scene_mngr)
     self.t = Thorn()
     self.em:add(self.t)
     self.t1 = Thorn()
-    self.t1.spr.pos.x = 750
+    self.t1.spr.pos.x = 350
     self.em:add(self.t1)
     self.t2 = Thorn()
     self.t2.spr.pos.x = 950
@@ -149,7 +150,13 @@ function T:update(dt)
         --eat
         --Run Bar
         if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
-            self.bar_run:set(self.bar_run.percentage - 0.3)
+            
+            if self.p.fox_sprite.current_anim == "jump" and love.keyboard.isDown("z") then
+                self.bar_run:set(self.bar_run.percentage - 0.7)
+            else 
+                self.bar_run:set(self.bar_run.percentage - 0.3)
+            end
+            
             if self.bar_run.percentage <= 20 then
                 self.p.enable = false
                 self.bar_run.fill_color = U.color(1,0,0,1)
@@ -158,7 +165,7 @@ function T:update(dt)
                 self.bar_run.fill_color = U.color(0.6,0.8,1,1)
             end
         else
-            self.bar_run:set(self.bar_run.percentage + 0.7)
+            self.bar_run:set(self.bar_run.percentage + 0.8)
         end
         if(self.bar_run.percentage == 100) then
             self.bar_run.fill_color = U.color(0.6,0.8,1,1)
@@ -166,17 +173,25 @@ function T:update(dt)
         self.bar_run.text= ""
         --
 
+
+        local eat 
+        if ( self.p.fox_sprite.flip.x == 1) then
+            eat = self.p.fox_sprite:rect_(55,0,-110,-10)
+        elseif self.p.fox_sprite.flip.x == -1 then
+            eat = self.p.fox_sprite:rect_(-55,0,-110,-10)
+        end
+
         if self.p.fox_sprite.current_anim == "bite" then
-            if self.a.remove == nil and self.a and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10),self.a.spr:rect() ) then
+            if self.a.remove == nil and self.a and U.AABBColl(eat,self.a.spr:rect() ) then
                 self.bar:set(self.bar.percentage - 15)
                 self.a.remove = true
-            elseif self.a1.remove == nil and self.a1 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a1.spr:rect() ) then
+            elseif self.a1.remove == nil and self.a1 and U.AABBColl(eat, self.a1.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a1.remove = true
-            elseif self.a2.remove == nil and self.a2 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a2.spr:rect() ) then
+            elseif self.a2.remove == nil and self.a2 and U.AABBColl(eat, self.a2.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a2.remove = true
-            elseif self.a3.remove == nil and self.a3 and U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.a3.spr:rect() ) then
+            elseif self.a3.remove == nil and self.a3 and U.AABBColl(eat, self.a3.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a3.remove = true
             end
@@ -274,7 +289,7 @@ function T:update(dt)
             self.e.spr.pos.x = 500
             self.e.spr.pos.y = 450
             self.e1.spr.pos.x = 700
-            self.e1.spr.pos.y = 400
+            self.e1.spr.pos.y = 380
             self.e2.spr.pos.x = 650
             self.e2.spr.pos.y = 450
             self.e.vx = 1
@@ -301,7 +316,7 @@ function T:update(dt)
             self.e1.vx = 1
             self.e2.vx = 1
             self.e1.spr.pos.x = 700
-            self.e1.spr.pos.y = 400
+            self.e1.spr.pos.y = 380
             self.e2.spr.pos.x = 650
             self.e2.spr.pos.y = 450
             it = false

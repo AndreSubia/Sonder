@@ -124,7 +124,13 @@ function T:update(dt)
         --eat
         --Run Bar
         if self.p.fox_sprite.current_anim == "run" or self.p.fox_sprite.current_anim == "jump" then
-            self.bar_run:set(self.bar_run.percentage - 0.3)
+            
+            if self.p.fox_sprite.current_anim == "jump" and love.keyboard.isDown("z") then
+                self.bar_run:set(self.bar_run.percentage - 0.7)
+            else 
+                self.bar_run:set(self.bar_run.percentage - 0.3)
+            end
+            
             if self.bar_run.percentage <= 20 then
                 self.p.enable = false
                 self.bar_run.fill_color = U.color(1,0,0,1)
@@ -133,29 +139,38 @@ function T:update(dt)
                 self.bar_run.fill_color = U.color(0.6,0.8,1,1)
             end
         else
-            self.bar_run:set(self.bar_run.percentage + 0.7)
+            self.bar_run:set(self.bar_run.percentage + 0.8)
         end
         if(self.bar_run.percentage == 100) then
             self.bar_run.fill_color = U.color(0.6,0.8,1,1)
         end
         self.bar_run.text= ""
         --
+        --
         local r1 = self.p.fox_sprite:rect_(0,0,-60,-10)
 
+        --
+        local eat 
+        if ( self.p.fox_sprite.flip.x == 1) then
+            eat = self.p.fox_sprite:rect_(55,0,-110,-10)
+        elseif self.p.fox_sprite.flip.x == -1 then
+            eat = self.p.fox_sprite:rect_(-55,0,-110,-10)
+        end
+
         if self.p.fox_sprite.current_anim == "bite" then
-            if self.f.remove == nil and self.f and U.AABBColl(r1,self.f.spr:rect()) then
+            if self.f.remove == nil and self.f and U.AABBColl(eat,self.f.spr:rect()) then
                 self.bar:set(self.bar.percentage + 20)
                 self.f.remove = true
             end
-            if self.f1.remove == nil and self.f1 and U.AABBColl(r1,self.f1.spr:rect()) then
+            if self.f1.remove == nil and self.f1 and U.AABBColl(eat,self.f1.spr:rect()) then
                 self.bar:set(self.bar.percentage + 20)
                 self.f1.remove = true
             end
-            if self.f2.remove == nil and self.f2 and U.AABBColl(r1,self.f2.spr:rect()) then
+            if self.f2.remove == nil and self.f2 and U.AABBColl(eat,self.f2.spr:rect()) then
                 self.bar:set(self.bar.percentage + 20)
                 self.f2.remove = true
             end
-            if self.f3.remove == nil and self.f3 and U.AABBColl(r1,self.f3.spr:rect()) then
+            if self.f3.remove == nil and self.f3 and U.AABBColl(eat,self.f3.spr:rect()) then
                 self.bar:set(self.bar.percentage + 20)
                 self.f3.remove = true
             end 

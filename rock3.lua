@@ -14,7 +14,7 @@ function rock3:new()
         enemy = love.graphics.newImage("Sprite/rock3.png")
     end
 
-    self.spr = Sprite(enemy,247,165,300,470)
+    self.spr = Sprite(enemy,247,165,300,470,1.3,1.3)
     self.spr:add_animations({idle = idle})
     self.spr:animation("idle")
     self.vx = 1
