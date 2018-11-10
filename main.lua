@@ -30,7 +30,7 @@ function love.load()
 	
 	--Cambiar Nivel 
 
-	local level = "intro"
+	local level = "level_1"
 	if ( level ~= ( "intro" or "main_menu" or "game_over" ) ) then
 		health.val(100)
 	end

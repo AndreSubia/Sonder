@@ -10,7 +10,7 @@ function m_bat:new()
         mss_b = love.graphics.newImage("Advice/aviso_bat2.png")
     end
     --self.spr = Sprite(mss_b,156,166,300,300)
-    self.spr = Sprite(mss_b,182,165,2100,300)
+    self.spr = Sprite(mss_b,182,165,2880,300)
 end 
 function m_bat:update(dt)
     self.spr:update(dt) 

@@ -80,7 +80,9 @@ function T:new(scene_mngr)
 
     alert1 = love.graphics.newImage("Advice/aviso_largo2.png")
     alert2 = love.graphics.newImage("Advice/aviso_largo3.png")
+    alert3 = love.graphics.newImage("Advice/aviso_run.png")
 
+    vida_energia = love.graphics.newImage("Advice/vida_energia.png")
     
     snd1 = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
     snd_forest = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
@@ -233,8 +235,8 @@ function T:update(dt)
     
             health.val(self.bar.percentage)
             print(self.bar.percentage)
-            self.bar.percentage = 19
-            self.bar.text = "19%"
+            self.bar.percentage = 20
+            self.bar.text = "20%"
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450 
             if self.a.remove ~= nil then
@@ -281,6 +283,8 @@ function T:draw()
 
     love.graphics.draw(alert1,500,100)
     love.graphics.draw(alert2,900,100)
+    love.graphics.draw(alert3,1700,100)
+    love.graphics.draw(vida_energia,2500,7)
 
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
@@ -294,7 +298,7 @@ function T:draw()
     if self.p.fox_sprite.pos.x >= 1200 and self.p.fox_sprite.pos.x <=1800  then
         msg:draw()
     end
-    if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
+    if self.p.fox_sprite.pos.x >= 2300 and self.p.fox_sprite.pos.x <=3500  then
         msg_2:draw()
     end
     if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
