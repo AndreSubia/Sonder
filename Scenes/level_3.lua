@@ -105,6 +105,8 @@ function T:new(scene_mngr)
     Map_test2 = love.graphics.newImage("Map/myforest2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
 
+    winter_bar = love.graphics.newImage("Sprite/winter_life_bar_.png")
+
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
 end
@@ -345,6 +347,7 @@ function T:draw()
     msg_3:draw()
 
     love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(winter_bar,s_pos+72,20)
     camera:unset()
 
 end

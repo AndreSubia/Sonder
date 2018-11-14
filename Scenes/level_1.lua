@@ -83,9 +83,13 @@ function T:new(scene_mngr)
     alert3 = love.graphics.newImage("Advice/aviso_run.png")
 
     vida_energia = love.graphics.newImage("Advice/vida_energia.png")
+    --test life bar
+    bar_2 = love.graphics.newImage("Sprite/bar.png")
     
     snd1 = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
     snd_forest = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
+    
+
 
     snd1:setLooping(true)
     snd_forest:setLooping(true)
@@ -281,21 +285,21 @@ function T:draw()
     love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
 
-    love.graphics.draw(alert1,500,100)
-    love.graphics.draw(alert2,900,100)
+    love.graphics.draw(alert1,900,100)
+    love.graphics.draw(alert2,500,100)
     love.graphics.draw(alert3,1700,100)
-    love.graphics.draw(vida_energia,2500,7)
+    love.graphics.draw(vida_energia,350,7)
 
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
     end
-    if self.p.fox_sprite.pos.x >= 500 and self.p.fox_sprite.pos.x <=1000  then
+    if self.p.fox_sprite.pos.x >= 400 and self.p.fox_sprite.pos.x <=1000  then
         butt_E:draw()
     end
-    if self.p.fox_sprite.pos.x >= 900 and self.p.fox_sprite.pos.x <=1500  then
+    if self.p.fox_sprite.pos.x >= 00 and self.p.fox_sprite.pos.x <=1500  then
         butt_J:draw()
     end
-    if self.p.fox_sprite.pos.x >= 1200 and self.p.fox_sprite.pos.x <=1800  then
+    if self.p.fox_sprite.pos.x >= 1000 and self.p.fox_sprite.pos.x <=1800  then
         msg:draw()
     end
     if self.p.fox_sprite.pos.x >= 2300 and self.p.fox_sprite.pos.x <=3500  then
@@ -306,6 +310,7 @@ function T:draw()
     end
     self.super.draw(self)
     love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(bar_2,s_pos+72,20)
 
    -- local r = self.p.fox_sprite:rect_(55,0,-110,-10)
    -- love.graphics.rectangle("line",r.x,r.y,r.w,r.h)

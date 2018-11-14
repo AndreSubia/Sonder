@@ -92,6 +92,8 @@ function T:new(scene_mngr)
     
     sign     = love.graphics.newImage("Sprite/sign.png")
     Map_test = love.graphics.newImage("Map/myforest.png")
+    --winter life bar 
+    life_bar = love.graphics.newImage("Sprite/winter_life_bar_.png")
     Map_test3 = love.graphics.newImage("Map/myforest3.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
     local snd_bear = love.audio.newSource("Sound/Ubermensch.wav","stream")
@@ -371,6 +373,7 @@ function T:draw()
     
     love.graphics.draw(sign,1100,400)
     love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(life_bar,s_pos+72,20)
     self.super.draw(self)
     
     camera:unset()

@@ -15,6 +15,8 @@ local Bunny  = require("../bunny")
 local Bar    = require("lib.ui.bar")
 local U      = require("lib.utils")
 local Vector2 = require("lib.vector2")
+local niebla = require("niebla1")
+local gotas = require("drops")
 
 local health = require("../global")
 
@@ -33,9 +35,17 @@ level_4_c = false
 
 function T:new(scene_mngr)
     camera:setBounds(0,0,1920,540)
+
+    
+
     self.super.new(self,scene_mngr)
+
+    self.gotA = gotas()
+    self.em:add(self.gotA)
+    
     self.p = Player()
     self.em:add(self.p)
+
 
     self.bear= Bear()
     self.bear.spr.pos.x = 3200
@@ -107,10 +117,19 @@ function T:new(scene_mngr)
     self.bar_run.pos.y = 65
     self.bar_run.fill_color = U.color(0.6,0.8,1,1)
 
+    self.nube = niebla()
+    self.em:add(self.nube)
+    self.nube2 = niebla()
+    self.nube2.spr.pos.x=2300 
+    self.em:add(self.nube2)
+
+    
+
 
     Map_test  = love.graphics.newImage("Map/cueva.png")
     --Map_test2 = love.graphics.newImage("Map/myforest2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+    bar_2 = love.graphics.newImage("Sprite/bar.png")
 
     cave_snd = love.audio.newSource("Sound/Cave.mp3","stream")
     snd_night = love.audio.newSource("Sound/night2.mp3","stream")
@@ -378,6 +397,7 @@ function T:draw()
     self.super.draw(self)
    
     love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(bar_2,s_pos+72,20)
     camera:unset()
    -- print(health.get())
 
