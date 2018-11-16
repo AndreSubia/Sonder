@@ -40,8 +40,8 @@ function T:new(scene_mngr)
 
     self.super.new(self,scene_mngr)
 
-    self.gotA = gotas()
-    self.em:add(self.gotA)
+    --self.gotA = gotas()
+    --self.em:add(self.gotA)
     
     self.p = Player()
     self.em:add(self.p)

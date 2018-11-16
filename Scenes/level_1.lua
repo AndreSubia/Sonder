@@ -16,6 +16,7 @@ local button_R = require("Advice.button_run")
 local button_E = require("Advice.button_eat")
 local mess = require("Advice.message")
 local mess_bat = require("Advice.message_bat")
+local grape_fruit = require("../grape")
 
 require("lib.camera")
 
@@ -30,6 +31,9 @@ function T:new(scene_mngr)
 
     camera:setBounds(0,0,1920,540)
     self.super.new(self,scene_mngr)
+    --Add grape fruit
+    self.u1 = grape_fruit()
+    self.em:add(self.u1)
     --Add Sonder
     self.p = Player()
     self.em:add(self.p)
@@ -57,6 +61,9 @@ function T:new(scene_mngr)
     self.a3 = apple()
     self.a3.spr.pos.x = 2650
     self.em:add(self.a3)
+
+    
+
     --Add health bar
     self.bar = Bar("health",125,35,200, 20, "20%")
     self.em:add(self.bar)
@@ -83,6 +90,8 @@ function T:new(scene_mngr)
     alert3 = love.graphics.newImage("Advice/aviso_run.png")
 
     vida_energia = love.graphics.newImage("Advice/vida_energia.png")
+    --prueba uva
+    planta_uva = love.graphics.newImage("Sprite/planta_uva.png")
     --test life bar
     bar_2 = love.graphics.newImage("Sprite/bar.png")
     
@@ -202,6 +211,10 @@ function T:update(dt)
                 self.bar:set(self.bar.percentage + 10)
                 self.a3.remove = true
             end
+            if self.u1.remove == nil and self.u1 and U.AABBColl(eat, self.u1.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.u1.remove = true
+            end
         end
 
         if (self.bar.percentage <= 0) then
@@ -289,6 +302,7 @@ function T:draw()
     love.graphics.draw(alert2,500,100)
     love.graphics.draw(alert3,1700,100)
     love.graphics.draw(vida_energia,350,7)
+    love.graphics.draw(planta_uva,850,430)
 
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
@@ -312,8 +326,8 @@ function T:draw()
     love.graphics.draw(Sonder,s_pos,15)
     love.graphics.draw(bar_2,s_pos+72,20)
 
-   -- local r = self.p.fox_sprite:rect_(55,0,-110,-10)
-   -- love.graphics.rectangle("line",r.x,r.y,r.w,r.h)
+    local r = self.p.fox_sprite:rect_(55,0,-110,-10)
+    love.graphics.rectangle("line",r.x,r.y,r.w,r.h)
     camera:unset()
 end
 

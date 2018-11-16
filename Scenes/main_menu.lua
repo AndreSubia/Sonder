@@ -1,7 +1,7 @@
 local Scene = require("lib.scene")
 
 local MM    = Scene:derive("main_manu")
-local img   = love.graphics.newImage("Map/menu.png")
+local img   = love.graphics.newImage("Map/sonder.png")
 
 function MM:draw()
     love.graphics.draw(img,0,0)

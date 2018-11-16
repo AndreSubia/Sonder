@@ -17,6 +17,7 @@ local Vector2 = require("lib.vector2")
 
 local health = require("../global")
 local mess_3 = require("Advice.message_lvl3")
+local grape_fruit = require("../grape")
 
 require("lib.camera")
 --Scene
@@ -33,6 +34,11 @@ level_3_c = false
 function T:new(scene_mngr)
     camera:setBounds(0,0,1920,540)
     self.super.new(self,scene_mngr)
+    --Add grape fruit
+    self.u1 = grape_fruit()
+    self.u1.spr.pos.x= 2020
+    self.em:add(self.u1)
+
     self.p = Player()
     self.em:add(self.p)
 
@@ -106,7 +112,8 @@ function T:new(scene_mngr)
     Sonder   = love.graphics.newImage("Map/sonder1.png")
 
     winter_bar = love.graphics.newImage("Sprite/winter_life_bar_.png")
-
+    --prueba uva
+    planta_uva = love.graphics.newImage("Sprite/planta_uva.png")
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
 end
@@ -197,6 +204,10 @@ function T:update(dt)
             elseif self.a3.remove == nil and self.a3 and U.AABBColl(eat, self.a3.spr:rect() ) then
                 self.bar:set(self.bar.percentage + 10)
                 self.a3.remove = true
+            end
+            if self.u1.remove == nil and self.u1 and U.AABBColl(eat, self.u1.spr:rect() ) then
+                self.bar:set(self.bar.percentage + 10)
+                self.u1.remove = true
             end
             
         end
@@ -342,6 +353,7 @@ function T:draw()
     love.graphics.draw(Map_test,960,0)
     love.graphics.draw(Map_test2,1920,0)
     love.graphics.draw(Map_test,2880,0)
+    love.graphics.draw(planta_uva,2000,430)
     self.super.draw(self)   
     
     msg_3:draw()
