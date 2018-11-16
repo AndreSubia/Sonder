@@ -10,6 +10,7 @@ local Apple  = require("../apple")
 local Apple1 = require("../apple1")
 
 local Fish   = require("../fish")
+local Fish2   = require("../fish2")
 local Bunny  = require("../bunny")
 local Bar    = require("lib.ui.bar")
 local U      = require("lib.utils")
@@ -51,14 +52,20 @@ function T:new(scene_mngr)
 
     self.f3 = Fish(true,-300,true,50,700)
     self.f3.spr.pos.x = 200 
-    self.em:add(self.   f3)
+    self.em:add(self.f3)
+
+    self.f4 = Fish2(true,-500,true,500)
+    self.em:add(self.f4)
+
+    self.f5 = Fish2(true,-700,true,100)
+    self.em:add(self.f5)
 
     self.bar = Bar("health",125,35,200, 20,"")
     self.em:add(self.bar)
     self.bar_changed = function(bar, value)
     self:on_bar_changed(bar, value) end
     
-    self.bar_run = Bar("run",125,35,200, 20,"")
+    self.bar_run = Bar("run",500,35,250, 20,"")
     self.em:add(self.bar_run)
     self.bar_changed_ = function(bar_run, value)
     self:on_bar_changed(bar_run, value) end
@@ -70,6 +77,7 @@ function T:new(scene_mngr)
     Map_test  = love.graphics.newImage("Map/myforest4.png")
     Map_test2 = love.graphics.newImage("Map/myforest4.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+    winter_bar = love.graphics.newImage("Advice/winter_life_bar_.png")
 
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
@@ -113,7 +121,7 @@ function T:update(dt)
         love.audio.play(snd1)
         love.audio.play(snd1_)
         self.bar.pos.x = 180 + camera.x
-        self.bar_run.pos.x = 180 + camera.x
+        self.bar_run.pos.x = 205 + camera.x
         s_pos = 5 + camera.x
         --
         if (it == false) then
@@ -195,7 +203,7 @@ function T:update(dt)
         ]]--
 
         
-        if (self.p.fox_sprite.pos.x >= 760) then
+        if (self.p.fox_sprite.pos.x >= 1000) then
             health.val(self.bar.percentage)
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450
@@ -221,9 +229,11 @@ function T:update(dt)
             
         end
     end
+
     if pause == true then
         love.audio.pause(snd1)
     end
+    
 end
 
 function T:draw()
@@ -234,7 +244,8 @@ function T:draw()
     love.graphics.draw(Map_test,2880,0)
     self.super.draw(self)   
     
-    love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(Sonder,s_pos+6,24)
+    love.graphics.draw(winter_bar,s_pos-10,12) 
     camera:unset()
 
 end

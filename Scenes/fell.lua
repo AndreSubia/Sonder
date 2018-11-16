@@ -60,7 +60,7 @@ function T:new(scene_mngr)
     self.bar_changed = function(bar, value)
     self:on_bar_changed(bar, value) end
     
-    self.bar_run = Bar("run",125,35,200, 20,"")
+    self.bar_run = Bar("run",500,35,250, 20,"")
     self.em:add(self.bar_run)
     self.bar_changed_ = function(bar_run, value)
     self:on_bar_changed(bar_run, value) end
@@ -76,6 +76,7 @@ function T:new(scene_mngr)
 
     Map_test = love.graphics.newImage("Map/fell1.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+    winter_bar = love.graphics.newImage("Advice/winter_life_bar_.png")
     snd1_ = love.audio.newSource("Sound/waterfall.wav","stream")
     snd1_:setLooping(true)
 end
@@ -115,7 +116,7 @@ function T:update(dt)
 
         self.bar.pos.x = 180 + camera.x
         self.bar.pos.y = 35 + camera.y
-        self.bar_run.pos.x = 180 + camera.x
+        self.bar_run.pos.x = 205 + camera.x
         self.bar_run.pos.y = 65 + camera.y
         s_posx = 5 + camera.x
         s_posy = 15 + camera.y
@@ -184,7 +185,8 @@ function T:draw()
     love.graphics.draw(Map_test,960,540*2)
   --  love.graphics.draw(Map_test,960,540*3)
     self.super.draw(self)
-    love.graphics.draw(Sonder,s_posx,s_posy)
+    love.graphics.draw(Sonder,s_posx+6,s_posy+8)
+    love.graphics.draw(winter_bar,s_posx-10,s_posy-3) 
     camera:unset()
 end
 

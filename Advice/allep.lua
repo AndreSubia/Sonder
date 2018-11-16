@@ -21,13 +21,15 @@ function T:new()
     end
     self.spr = Sprite(ep,120,60,480,270,8,8)
     self.spr:add_animations({ep1 = ep1,ep2 = ep2,ep3 = ep3,ep4 = ep4})
-    self.spr:animation("ep1")
-    self.anim_sm = StateMachine(self, "ep1")
+    self.spr:animation("ep4")
+    self.anim_sm = StateMachine(self, "ep4")
     bang = love.audio.newSource("Sound/bang.wav","stream")
+
+    message1 = love.graphics.newImage("Advice/message1.png")
 end
 
 function T:idle_enter(dt)
-    self.spr:animation("ep1")
+    self.spr:animation("ep4")
 end
 
 function T:update(dt)
@@ -44,29 +46,38 @@ function T:update(dt)
         self.spr:animation("ep3")
         love.audio.play(bang)
     end]]
-    if time > 0 and time <1 then
+    if time > 4 and time <5 then
+        love.audio.play(go_snd)
         --love.audio.stop(bang)
-        self.spr:animation("ep4")
+        love.graphics.setColor(0.8,0.8,0.8,1)
+        --self.spr:animation("ep4")
     end
     
-    if (time >= 1 and time < 2) then
+    if (time >= 5 and time < 6) then
         love.graphics.setColor(0.4,0.4,0.4,1)
+        
     end
-    if (time>=2 and time <3) then
+    if (time >= 6 and time < 7) then
         love.graphics.setColor(0.2,0.2,0.2,1)
-        self.spr:animation("ep")
+        
+        --self.spr:animation("ep4")
     end
-    if (time>=4) then
+    if (time >= 7 and time < 8) then
         love.graphics.setColor(0.1,0.1,0.1,1)
-    end
-    if time >= 5 then 
-        love.graphics.setColor(1,1,1,1)
         intro_c = true
+        love.graphics.setColor(1,1,1,1)
+        
     end
 end
 
 function T:draw()
-    self.spr:draw()
+    
+    if time <= 4 then
+        love.graphics.draw(message1,0,0)
+    else
+    
+        self.spr:draw()
+    end
 end
 
 return T

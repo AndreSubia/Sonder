@@ -15,7 +15,6 @@ local button_J = require("Advice.button_jump")
 local button_R = require("Advice.button_run")
 local button_E = require("Advice.button_eat")
 local mess = require("Advice.message")
-local mess_bat = require("Advice.message_bat")
 
 require("lib.camera")
 
@@ -28,7 +27,7 @@ level_1_c = false
 
 function T:new(scene_mngr)
 
-    camera:setBounds(0,0,1920,540)
+    camera:setBounds(0,0,1920*4,540)
     self.super.new(self,scene_mngr)
     --Add Sonder
     self.p = Player()
@@ -77,14 +76,14 @@ function T:new(scene_mngr)
 
     Map_test = love.graphics.newImage("Map/fondo2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+    alimentos = love.graphics.newImage("Advice/alimentos.png")
+    energia = love.graphics.newImage("Advice/energia.png")
+    murcielagos = love.graphics.newImage("Advice/murcielagos.png")
+    adelante = love.graphics.newImage("Advice/adelante.png")
 
-    alert1 = love.graphics.newImage("Advice/aviso_largo2.png")
-    alert2 = love.graphics.newImage("Advice/aviso_largo3.png")
-
-    
     snd1 = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
     snd_forest = love.audio.newSource("Sound/Forest_Ambience.mp3","stream")
-
+    bar_2 = love.graphics.newImage("Advice/bar.png")
     snd1:setLooping(true)
     snd_forest:setLooping(true)
 end
@@ -120,6 +119,7 @@ function T:update(dt)
         --health bar & Sonder icon
         love.audio.play(snd1)
         love.audio.play(snd_forest)
+        love.audio.stop(go_snd)
         
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
         self.bar.pos.x = 180 + camera.x
@@ -164,7 +164,7 @@ function T:update(dt)
         local r2 = self.b.spr:rect()
 
         if U.AABBColl(r1, r2) then
-            self.p.fox_sprite.tintColor = U.color(1,0,0,1)
+            --self.p.fox_sprite.tintColor = U.color(1,0,0,1)
 
             local md = r2:minowski_diff(r1)
             local sep = md:closest_point_on_bounds(Vector2())
@@ -180,6 +180,7 @@ function T:update(dt)
         --
         if U.AABBColl(r1,self.t.spr:rect()) then
             self.bar:set(self.bar.percentage - 1)
+            self.t.spr:animation("on_idle")
         end
         --
 
@@ -199,7 +200,6 @@ function T:update(dt)
         end
 
         if (self.bar.percentage <= 0) then
-
             if(n_d >= 4 and n_d <9) then
                 self.bar:set(30)
                 self.bar.text = "30%"
@@ -210,7 +210,7 @@ function T:update(dt)
                 self.bar:set(20)
                 self.bar.text = "20%"
             end
-
+            
             if self.a.remove ~= nil then
                 self.em:add(self.a)
                 self.a.remove = nil
@@ -232,9 +232,8 @@ function T:update(dt)
         if (self.p.fox_sprite.pos.x >= (960*4)) then
     
             health.val(self.bar.percentage)
-            print(self.bar.percentage)
-            self.bar.percentage = 19
-            self.bar.text = "19%"
+            self.bar:set(20)
+            self.bar.text = "20%"
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450 
             if self.a.remove ~= nil then
@@ -270,7 +269,6 @@ butt_R = button_R()
 butt_E = button_E()
 
 msg = mess()
-msg_2 = mess_bat() 
 
 function T:draw()
     camera:set()
@@ -279,14 +277,12 @@ function T:draw()
     love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
 
-    love.graphics.draw(alert1,500,100)
-    love.graphics.draw(alert2,900,100)
-
     if self.p.fox_sprite.pos.x >= 0 and self.p.fox_sprite.pos.x <= 650 and s1 == true then
         butt:draw()
     end
     if self.p.fox_sprite.pos.x >= 500 and self.p.fox_sprite.pos.x <=1000  then
         butt_E:draw()
+        love.graphics.draw(alimentos,700,150)
     end
     if self.p.fox_sprite.pos.x >= 900 and self.p.fox_sprite.pos.x <=1500  then
         butt_J:draw()
@@ -295,13 +291,21 @@ function T:draw()
         msg:draw()
     end
     if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
-        msg_2:draw()
-    end
-    if self.p.fox_sprite.pos.x >= 1500 and self.p.fox_sprite.pos.x <=2500  then
+        love.graphics.draw(energia,1700,150)
         butt_R:draw()
     end
+
+    if self.p.fox_sprite.pos.x >= 2600 and self.p.fox_sprite.pos.x <=3200   then
+        love.graphics.draw(murcielagos,2700,150)
+    end
+    
+    if self.p.fox_sprite.pos.x >= 3200 then
+        love.graphics.draw(adelante,3400,150)
+    end
+
     self.super.draw(self)
-    love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(Sonder,s_pos+6,24)
+    love.graphics.draw(bar_2,s_pos-10,12) 
 
    -- local r = self.p.fox_sprite:rect_(55,0,-110,-10)
    -- love.graphics.rectangle("line",r.x,r.y,r.w,r.h)

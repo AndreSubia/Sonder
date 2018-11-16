@@ -16,12 +16,12 @@ local U      = require("lib.utils")
 local Vector2 = require("lib.vector2")
 
 local health = require("../global")
-local mess_3 = require("Advice.message_lvl3")
 
 require("lib.camera")
 --Scene
 local T      = Scene:derive("level_3")
 local Map_test
+local Map_test2
 local Sonder
 local s_pos
 --local fox_sprite
@@ -91,7 +91,7 @@ function T:new(scene_mngr)
     self.bar_changed = function(bar, value)
     self:on_bar_changed(bar, value) end
     
-    self.bar_run = Bar("run",125,35,200, 20,"")
+    self.bar_run = Bar("run",500,35,250, 20,"")
     self.em:add(self.bar_run)
     self.bar_changed_ = function(bar_run, value)
     self:on_bar_changed(bar_run, value) end
@@ -104,6 +104,7 @@ function T:new(scene_mngr)
     Map_test  = love.graphics.newImage("Map/myforest.png")
     Map_test2 = love.graphics.newImage("Map/myforest2.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+    winter_bar = love.graphics.newImage("Advice/winter_life_bar_.png")
 
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
@@ -140,7 +141,7 @@ function T:update(dt)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
         love.audio.play(snd1)
         self.bar.pos.x = 180 + camera.x
-        self.bar_run.pos.x = 180 + camera.x
+        self.bar_run.pos.x = 205 + camera.x
         s_pos = 5 + camera.x
         --
         if (it == false) then
@@ -331,8 +332,6 @@ function T:update(dt)
     end
 end
 
-msg_3= mess_3()
-
 function T:draw()
     camera:set()
     love.graphics.clear(0.34,0.38,1)
@@ -342,9 +341,8 @@ function T:draw()
     love.graphics.draw(Map_test,2880,0)
     self.super.draw(self)   
     
-    msg_3:draw()
-
-    love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(Sonder,s_pos+6,24)
+    love.graphics.draw(winter_bar,s_pos-10,12) 
     camera:unset()
 
 end

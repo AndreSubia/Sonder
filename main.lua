@@ -26,10 +26,10 @@ function love.load()
 	Key:hook_love_events()
 
 	sm = SM("Scenes",{"intro","main_menu","level_1","level_3","level_4","level_5",
-					  "level_6","level_7","level_8","level_9","game_over","win","fell"})	
+					  "level_6","level_7","level_8","level_9","game_over","win","fell","message1",
+					  "message2","message3"})	
 	
 	--Cambiar Nivel 
-
 	local level = "intro"
 	if ( level ~= ( "intro" or "main_menu" or "game_over" ) ) then
 		health.val(100)
@@ -40,6 +40,8 @@ function love.load()
 
 end
 
+local time_ = 0
+local m = false
 
 function love.update(dt)
 	if dt>0.035 then return end
@@ -50,6 +52,7 @@ function love.update(dt)
 								  sm.current_scene_name == "level_5" or 
 								  sm.current_scene_name == "level_6" or
 								  sm.current_scene_name == "level_7" or
+								  sm.current_scene_name == "level_8" or
 								  sm.current_scene_name == "fell") then
 		pause = not pause
 		
@@ -57,9 +60,12 @@ function love.update(dt)
 
 	if sm.current_scene_name == "intro" and intro_c == true then 
 		sm:switch("main_menu")
+		
 	end
 
-	if (sm.current_scene_name == "level_1" and level_1_c == true ) then
+	if (level_1_c == true and m == true) then
+		time_ = 0
+		m = false
 		sm:switch("level_3")
 	end
 
@@ -81,6 +87,22 @@ function love.update(dt)
 
 	if (sm.current_scene_name == "fell" and fell_c == true ) then
 		sm:switch("level_7")
+	end
+
+	if (sm.current_scene_name == "level_7" and level_7_c == true ) then
+		sm:switch("message2")
+	end
+
+	if (sm.current_scene_name == "message2" and message2_c == true ) then
+		sm:switch("level_8")
+	end
+
+	if (sm.current_scene_name == "level_8" and level_8_c == true ) then
+		sm:switch("level_9")
+	end
+
+	if (sm.current_scene_name == "level_9" and level_9_c == true ) then
+		sm:switch("message3")
 	end
 
 	if game_over == true then
@@ -105,6 +127,20 @@ function love.update(dt)
 
 	if (sm.current_scene_name == "main_menu" and Key:key_down("return") and game_over == false) then
 		sm:switch("level_1")
+	end
+
+	if sm.current_scene_name == "level_1" and level_1_c == true then
+		love.audio.stop(go_snd)
+		sm:switch("message1")
+	end
+
+	if sm.current_scene_name == "message1" then
+		time_ = time_ + dt;
+	end
+
+
+	if time_ >= 15 then
+		m = true
 	end
 
 	if Key:key_down("escape") then

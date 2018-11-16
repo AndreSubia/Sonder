@@ -14,12 +14,14 @@ local Bunny  = require("../bunny")
 local Bar    = require("lib.ui.bar")
 local U      = require("lib.utils")
 local Vector2 = require("lib.vector2")
+local Thorn  = require("../rock4")
+
 
 local health = require("../global")
 
 require("lib.camera")
 --Scene
-local T      = Scene:derive("level_9")
+local T      = Scene:derive("level_8")
 local Map_test
 local Sonder
 local s_pos
@@ -35,13 +37,31 @@ function T:new(scene_mngr)
     self.p = Player()
     self.em:add(self.p)
 
+    self.t = Thorn()
+    self.t.spr.pos.x = 550
+    self.em:add(self.t)
+    self.t1 = Thorn()
+    self.t1.spr.pos.x = 950
+    self.em:add(self.t1)
+    self.t2 = Thorn()
+    self.t2.spr.pos.x = 1750
+    self.em:add(self.t2)
+    self.t3 = Thorn()
+    self.t3.spr.pos.x = 2350
+    self.em:add(self.t3)
+    self.t4 = Thorn()
+    self.t4.spr.pos.x = 3600
+    self.em:add(self.t4)
+    self.t5 = Thorn()
+    self.t5.spr.pos.x = 3100
+    self.em:add(self.t5)
     
     self.bar = Bar("health",125,35,200, 20,"")
     self.em:add(self.bar)
     self.bar_changed = function(bar, value)
     self:on_bar_changed(bar, value) end
     
-    self.bar_run = Bar("run",125,35,200, 20,"")
+    self.bar_run = Bar("run",500,35,250, 20,"")
     self.em:add(self.bar_run)
     self.bar_changed_ = function(bar_run, value)
     self:on_bar_changed(bar_run, value) end
@@ -50,9 +70,10 @@ function T:new(scene_mngr)
     self.bar_run.pos.y = 65
     self.bar_run.fill_color = U.color(0.6,0.8,1,1)
 
-    Map_test  = love.graphics.newImage("Map/myforest.png")
-    Map_test2 = love.graphics.newImage("Map/myforest2.png")
+    Map_test  = love.graphics.newImage("Map/myforest5.png")
+    --Map_test2 = love.graphics.newImage("Map/myforest.png")
     Sonder   = love.graphics.newImage("Map/sonder1.png")
+    winter_bar = love.graphics.newImage("Advice/winter_life_bar_.png")
 
     snd1 = love.audio.newSource("Sound/Snowfall.ogg","stream")
     snd1:setLooping(true)
@@ -89,12 +110,12 @@ function T:update(dt)
         camera:setPosition( self.p.fox_sprite.pos.x - (love.graphics.getWidth()/3.5), self.p.fox_sprite.pos.y - (love.graphics.getHeight()))
         love.audio.play(snd1)
         self.bar.pos.x = 180 + camera.x
-        self.bar_run.pos.x = 180 + camera.x
+        self.bar_run.pos.x = 205 + camera.x
         s_pos = 5 + camera.x
         --
         if (it == false) then
-            self.bar:set(100)--health.get())
-            self.bar.text = "100%"--health.get().."%"
+            self.bar:set(health.get())
+            self.bar.text = health.get().."%"
             it = true
         end
         --eat
@@ -122,15 +143,45 @@ function T:update(dt)
         end
         self.bar_run.text= ""
         --
-
+        if  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t.spr:rect()) then
+            self.bar:set(self.bar.percentage - 3)
+            self.t.spr:animation("on_idle")
+        elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t1.spr:rect()) then
+            self.bar:set(self.bar.percentage - 3)
+            self.t1.spr:animation("on_idle")
+        elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t2.spr:rect()) then
+            self.bar:set(self.bar.percentage - 3)
+            self.t2.spr:animation("on_idle")
+        elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t3.spr:rect()) then
+            self.bar:set(self.bar.percentage - 3)
+            self.t3.spr:animation("on_idle")
+        elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t4.spr:rect()) then
+            self.bar:set(self.bar.percentage - 3)
+            self.t4.spr:animation("on_idle")
+        elseif  U.AABBColl(self.p.fox_sprite:rect_(0,0,-60,-10), self.t5.spr:rect()) then
+            self.bar:set(self.bar.percentage - 3)
+            self.t4.spr:animation("on_idle")
+        end
         -- si hay cosas que comer
         if self.p.fox_sprite.current_anim == "bite" then
             
         end
 
+        if self.p.fox_sprite.pos.x > 0 and self.p.fox_sprite.pos.x < 1200 then
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + 600*dt
+        end
+
+        if self.p.fox_sprite.pos.x >= 1200 and self.p.fox_sprite.pos.x < 2100 then
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + 800*dt
+        end
+
+        if self.p.fox_sprite.pos.x >= 2100 then
+            self.p.fox_sprite.pos.x = self.p.fox_sprite.pos.x + 1000*dt
+        end
+
         --condiciones para acabar el nivel
         
-        if (self.p.fox_sprite.pos.x >= 2720) then
+        if (self.p.fox_sprite.pos.x >= 2720+960) then
             health.val(self.bar.percentage)
             self.p.fox_sprite.pos.x = 80
             self.p.fox_sprite.pos.y = 450
@@ -138,6 +189,13 @@ function T:update(dt)
             love.audio.stop(snd1)
             level_9_c = true
             
+        end
+
+        if (self.bar.percentage <= 0) then
+            self.p.fox_sprite.pos.x = 0
+            it = false
+            love.audio.stop(snd1)
+            game_over = true
         end
 
     end
@@ -152,11 +210,12 @@ function T:draw()
     love.graphics.clear(0.34,0.38,1)
     love.graphics.draw(Map_test,0,0)
     love.graphics.draw(Map_test,960,0)
-    love.graphics.draw(Map_test2,1920,0)
+    love.graphics.draw(Map_test,1920,0)
     love.graphics.draw(Map_test,2880,0)
     self.super.draw(self)   
     
-    love.graphics.draw(Sonder,s_pos,15)
+    love.graphics.draw(Sonder,s_pos+6,24)
+    love.graphics.draw(winter_bar,s_pos-10,12) 
     camera:unset()
 
 end
