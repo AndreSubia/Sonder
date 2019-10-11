@@ -1,5 +1,5 @@
 # _Sonder_
-Un juego hecho para el Concurso Nacional de Videojuegos - Arequipa 2018
+Un juego hecho para el Concurso Nacional de Videojuegos - Lima 2018
 
 Sinopsis:
 
