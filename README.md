@@ -4,7 +4,7 @@ A game made for the National Videogame Contest - Peru Lima 2018 🇵🇪🦊
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 ![Lua](https://img.shields.io/badge/Lua-5.1%2C%20JIT-blue.svg)
 ![Lines of code](https://img.shields.io/tokei/lines/github.com/senior-gato/Sonder)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/senior-gato/Sonder)
+![GitHub Release Date](https://img.shields.io/github/release-date/senior-gato/Sonder)
 ![GitHub issues](https://img.shields.io/github/issues/senior-gato/Sonder)
 ![GitHub Repo stars](https://img.shields.io/github/stars/senior-gato/Sonder?style=social)
 
