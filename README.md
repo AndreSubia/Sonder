@@ -6,6 +6,7 @@ A game made for the National Videogame Contest - Peru Lima 2018 🇵🇪🦊
 ![Lines of code](https://img.shields.io/tokei/lines/github.com/senior-gato/Sonder)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/senior-gato/Sonder)
 ![GitHub issues](https://img.shields.io/github/issues/senior-gato/Sonder)
+![GitHub Repo stars](https://img.shields.io/github/stars/senior-gato/Sonder?style=social)
 
 
 Synopsis:
@@ -17,7 +18,7 @@ Winter is coming and in order to survive, our friend will have to undertake a jo
 |     |     |
 | :-: | :-: |
 |  Menu Game | Main Character |
-|  <img src="https://user-images.githubusercontent.com/21184536/44635089-ee071500-a966-11e8-9d9f-f4fe13c56458.png" height="250" />   |  <img src="https://user-images.githubusercontent.com/21184536/44634844-7932db80-a964-11e8-85ef-2cc8fad41c68.png" height="250" />    |
+|  <img src="https://user-images.githubusercontent.com/21184536/44635089-ee071500-a966-11e8-9d9f-f4fe13c56458.png" height="300" />   |  <img src="https://user-images.githubusercontent.com/21184536/44634844-7932db80-a964-11e8-85ef-2cc8fad41c68.png" height="300" />    |
 
 
 
@@ -26,13 +27,16 @@ Winter is coming and in order to survive, our friend will have to undertake a jo
 
 |     |     |
 | :-: | :-: |
-|  Menu Game | Main Character |
-|  <img src="" height="250" />   |  <img src="" height="250" />    |
+|  Tutorial Game | Snow Level |
+|  <img src="assets/tutorial.png" height="250"  />   |  <img src="assets/snow.png" height="250" />    |
+| Bear Enemy  |  Cave Game|
+| <img src="assets/bear.png" height="250" />  |   <img src="assets/cave.png" height="250"  />     |
 
-[Lua][lua] script that makes [LÖVE][love] game release easier (previously
+
+[Lua](http://www.lua.org/) script that makes [LÖVE](https://www.love2d.org/) game release easier (previously
 Bash script).\
-Automates LÖVE [Game Distribution][game_dist].\
-LÖVE [forum topic][forum_topic].
+Automates LÖVE [Game Distribution](https://www.love2d.org/wiki/Game_Distribution).\
+LÖVE [forum topic](https://love2d.org/forums/viewtopic.php?t=75387).
 
 ### Prerequisites
 
